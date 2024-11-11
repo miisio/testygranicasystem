@@ -3,58 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Raportowania Granicznego</title>
+    <title>System Graniczny</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Sekcja logowania -->
     <div id="loginSection">
         <h2>Logowanie</h2>
-        <input type="text" id="username" placeholder="Login" required>
-        <input type="password" id="password" placeholder="Hasło" required>
-        <button onclick="zaloguj()">Zaloguj</button>
-        <p id="loginError" style="color: red;"></p>
+        <form onsubmit="zaloguj(); return false;">
+            <input type="text" id="username" placeholder="Login" required>
+            <input type="password" id="password" placeholder="Hasło" required>
+            <button type="submit">Zaloguj</button>
+            <p id="loginError" style="color:red;"></p>
+        </form>
     </div>
 
+    <!-- Sekcja główna (po zalogowaniu) -->
     <div id="mainContent" style="display: none;">
         <h2>Witaj, <span id="userFullName"></span></h2>
-        
-        <!-- Mandaty -->
+
+        <!-- Sekcja działań dyscyplinarnych -->
+        <div id="dyscyplinarneSection" style="display: none;">
+            <h3>Działania Dyscyplinarne</h3>
+            <form id="dyscyplinarneForm" onsubmit="dodajDzialanieDyscyplinarne(); return false;">
+                <input type="text" id="dyscyplinarneTyp" placeholder="Typ działania" required>
+                <textarea id="dyscyplinarneOpis" placeholder="Opis działania" required></textarea>
+                <button type="submit">Dodaj Działanie Dyscyplinarne</button>
+            </form>
+            <ul id="dyscyplinarneLista"></ul>
+        </div>
+
+        <!-- Sekcja mandatów -->
         <div id="mandatySection" style="display: none;">
-            <h3>Dodaj Mandat</h3>
-            <form id="mandatyForm">
-                <label for="mandatKwota">Kwota Mandatu:</label>
-                <input type="text" id="mandatKwota" required>
-                <label for="mandatOpis">Opis:</label>
-                <input type="text" id="mandatOpis" required>
-                <button type="button" onclick="dodajMandat()">Dodaj Mandat</button>
+            <h3>Mandaty</h3>
+            <form id="mandatyForm" onsubmit="dodajMandat(); return false;">
+                <input type="number" id="mandatKwota" placeholder="Kwota Mandatu" required>
+                <textarea id="mandatOpis" placeholder="Opis Mandatu" required></textarea>
+                <button type="submit">Dodaj Mandat</button>
             </form>
             <ul id="mandatyLista"></ul>
         </div>
 
-        <!-- Zatrzymania -->
+        <!-- Sekcja zatrzymań -->
         <div id="zatrzymaniaSection" style="display: none;">
-            <h3>Dodaj Zatrzymanie</h3>
-            <form id="zatrzymaniaForm">
-                <label for="zatrzymanieOpis">Opis:</label>
-                <input type="text" id="zatrzymanieOpis" required>
-                <button type="button" onclick="dodajZatrzymanie()">Dodaj Zatrzymanie</button>
+            <h3>Zatrzymania</h3>
+            <form id="zatrzymaniaForm" onsubmit="dodajZatrzymanie(); return false;">
+                <textarea id="zatrzymanieOpis" placeholder="Opis zatrzymania" required></textarea>
+                <button type="submit">Dodaj Zatrzymanie</button>
             </form>
             <ul id="zatrzymaniaLista"></ul>
         </div>
-
-        <!-- Działania dyscyplinarne -->
-        <div id="dyscyplinarneSection" style="display: none;">
-            <h3>Dodaj Działanie Dyscyplinarne</h3>
-            <form id="dyscyplinarneForm">
-                <label for="dyscyplinarneTyp">Typ Działania:</label>
-                <input type="text" id="dyscyplinarneTyp" required>
-                <label for="dyscyplinarneOpis">Opis:</label>
-                <input type="text" id="dyscyplinarneOpis" required>
-                <button type="button" onclick="dodajDzialanieDyscyplinarne()">Dodaj Działanie Dyscyplinarne</button>
-            </form>
-            <ul id="dyscyplinarneLista"></ul>
-        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

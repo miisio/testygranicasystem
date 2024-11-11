@@ -72,7 +72,7 @@ function getFullName(username) {
         "cezary.poranek": "Kpr. SG Cezary Poranek",
         "leonard.bielik": "Ppłk SG Leonard Bielik",
         "jan.kowalski": "Szer. SG Jan Kowalski",
-        "jan.kowalczyk": "Szer. SG Jan Kowalczyk"
+        "jan.kowalczyk": "Szer. SG Jan Kowalski"
     };
     return fullNames[username] || "";
 }
@@ -91,35 +91,16 @@ function dodajDzialanieDyscyplinarne() {
     };
 
     // Dodawanie do listy działań dyscyplinarnych
-    const dzialaniaLista = document.getElementById("dyscyplinarneLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${dzialanieInfo.data} - ${dzialanieInfo.dzialanie}: ${dzialanieInfo.opis} (${username})`;
-    dzialaniaLista.appendChild(listItem);
+    const li = document.createElement("li");
+    li.textContent = `${data}: ${dzialanie} - ${opis}`;
+    document.getElementById("dyscyplinarneLista").appendChild(li);
 
-    // Wysyłanie na Discorda
-    const discordWebhookUrl = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y"; 
-    fetch(discordWebhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: "System Raportowania Granicznego",
-            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
-            embeds: [{
-                title: `Nowe działanie dyscyplinarne: ${dzialanieInfo.dzialanie}`,
-                description: `Imię i nazwisko: ${getFullName(username)}\nOpis: ${dzialanieInfo.opis}`,
-                color: 3447003,
-                footer: { text: `Data: ${dzialanieInfo.data}` }
-            }]
-        })
-    });
-
-    // Wyczyść formularz
+    // Resetowanie formularza
     document.getElementById("dyscyplinarneForm").reset();
 }
 
 // Funkcja dodająca mandat
 function dodajMandat() {
-    const username = document.getElementById("username").value;
     const kwota = document.getElementById("mandatKwota").value;
     const opis = document.getElementById("mandatOpis").value;
     const data = new Date().toLocaleString("pl-PL");
@@ -131,35 +112,16 @@ function dodajMandat() {
     };
 
     // Dodawanie do listy mandatów
-    const mandatyLista = document.getElementById("mandatyLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${mandatInfo.data} - Mandat: ${mandatInfo.kwota} PLN - ${mandatInfo.opis} (${username})`;
-    mandatyLista.appendChild(listItem);
+    const li = document.createElement("li");
+    li.textContent = `${data}: Mandat - ${kwota} PLN: ${opis}`;
+    document.getElementById("mandatyLista").appendChild(li);
 
-    // Wysyłanie na Discorda
-    const discordWebhookUrl = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
-    fetch(discordWebhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: "System Raportowania Granicznego",
-            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
-            embeds: [{
-                title: `Nowy mandat`,
-                description: `Imię i nazwisko: ${getFullName(username)}\nKwota: ${mandatInfo.kwota} PLN\nOpis: ${mandatInfo.opis}`,
-                color: 3447003,
-                footer: { text: `Data: ${mandatInfo.data}` }
-            }]
-        })
-    });
-
-    // Wyczyść formularz
+    // Resetowanie formularza
     document.getElementById("mandatyForm").reset();
 }
 
 // Funkcja dodająca zatrzymanie
 function dodajZatrzymanie() {
-    const username = document.getElementById("username").value;
     const opis = document.getElementById("zatrzymanieOpis").value;
     const data = new Date().toLocaleString("pl-PL");
 
@@ -169,28 +131,10 @@ function dodajZatrzymanie() {
     };
 
     // Dodawanie do listy zatrzymań
-    const zatrzymaniaLista = document.getElementById("zatrzymaniaLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${zatrzymanieInfo.data} - Zatrzymanie: ${zatrzymanieInfo.opis} (${username})`;
-    zatrzymaniaLista.appendChild(listItem);
+    const li = document.createElement("li");
+    li.textContent = `${data}: Zatrzymanie - ${opis}`;
+    document.getElementById("zatrzymaniaLista").appendChild(li);
 
-    // Wysyłanie na Discorda
-    const discordWebhookUrl = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
-    fetch(discordWebhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: "System Raportowania Granicznego",
-            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
-            embeds: [{
-                title: `Nowe zatrzymanie`,
-                description: `Imię i nazwisko: ${getFullName(username)}\nOpis: ${zatrzymanieInfo.opis}`,
-                color: 3447003,
-                footer: { text: `Data: ${zatrzymanieInfo.data}` }
-            }]
-        })
-    });
-
-    // Wyczyść formularz
+    // Resetowanie formularza
     document.getElementById("zatrzymaniaForm").reset();
 }
