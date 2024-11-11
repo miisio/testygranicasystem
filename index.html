@@ -34,7 +34,11 @@
                 <label for="dyscyplinarneImieNazwisko">Imię i Nazwisko osoby:</label>
                 <input type="text" id="dyscyplinarneImieNazwisko" placeholder="Imię i Nazwisko osoby" required>
                 <label for="dyscyplinarneTyp">Typ działania:</label>
-                <input type="text" id="dyscyplinarneTyp" placeholder="Typ działania" required>
+                <select id="dyscyplinarneTyp" required>
+                    <option value="reprymenda">Reprymenda</option>
+                    <option value="zawieszenie">Zawieszenie</option>
+                    <option value="zwolnienie dyscyplinarne">Zwolnienie Dyscyplinarne</option>
+                </select>
                 <label for="dyscyplinarneOpis">Opis działania:</label>
                 <textarea id="dyscyplinarneOpis" placeholder="Opis działania" required></textarea>
                 <button type="submit">Dodaj Działanie Dyscyplinarne</button>

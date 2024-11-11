@@ -24,18 +24,8 @@ function zaloguj() {
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("userFullName").textContent = userFullName[username];
-
-        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "cezary.poranek") {
-            document.getElementById("dyscyplinarneSection").style.display = "block";
-        }
-        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "jan.kowalski") {
-            document.getElementById("mandatySection").style.display = "block";
-        }
-        if (username === "leonard.bielik" || username === "jan.kowalski") {
-            document.getElementById("zatrzymaniaSection").style.display = "block";
-        }
     } else {
-        document.getElementById("loginError").textContent = "Niepoprawny login lub hasło.";
+        document.getElementById("loginError").textContent = "Nieprawidłowy login lub hasło!";
     }
 }
 
@@ -46,33 +36,30 @@ function dodajDzialanieDyscyplinarne() {
     const typ = document.getElementById("dyscyplinarneTyp").value;
     const opis = document.getElementById("dyscyplinarneOpis").value;
 
-    const lista = document.getElementById("dyscyplinarneLista");
-    const li = document.createElement("li");
-    li.textContent = `${imieNazwisko} (${nick}) - Typ: ${typ}, Opis: ${opis}`;
-    lista.appendChild(li);
-}
+    const newItem = document.createElement("li");
+    newItem.textContent = `${nick} (${imieNazwisko}) - ${typ}: ${opis}`;
+    document.getElementById("dyscyplinarneLista").appendChild(newItem);
 
-// Funkcja dodawania mandatu
-function dodajMandat() {
-    const nick = document.getElementById("mandatNick").value;
-    const imieNazwisko = document.getElementById("mandatImieNazwisko").value;
-    const kwota = document.getElementById("mandatKwota").value;
-    const opis = document.getElementById("mandatOpis").value;
-
-    const lista = document.getElementById("mandatyLista");
-    const li = document.createElement("li");
-    li.textContent = `${imieNazwisko} (${nick}) - Kwota: ${kwota} zł, Opis: ${opis}`;
-    lista.appendChild(li);
-}
-
-// Funkcja dodawania zatrzymania
-function dodajZatrzymanie() {
-    const nick = document.getElementById("zatrzymanieNick").value;
-    const imieNazwisko = document.getElementById("zatrzymanieImieNazwisko").value;
-    const opis = document.getElementById("zatrzymanieOpis").value;
-
-    const lista = document.getElementById("zatrzymaniaLista");
-    const li = document.createElement("li");
-    li.textContent = `${imieNazwisko} (${nick}) - Opis: ${opis}`;
-    lista.appendChild(li);
+    // Przykład webhooka - wysyłanie danych do serwera
+    fetch('https://your-webhook-url.com', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nick,
+            imieNazwisko,
+            typ,
+            opis
+        })
+    }).then(response => {
+        if (response.ok) {
+            alert("Działanie dyscyplinarne zapisane!");
+        } else {
+            alert("Błąd podczas wysyłania danych!");
+        }
+    }).catch(error => {
+        console.error("Błąd w połączeniu z webhookiem:", error);
+        alert("Błąd webhooka!");
+    });
 }
