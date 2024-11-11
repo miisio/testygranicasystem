@@ -1,0 +1,65 @@
+/* Stylowanie sekcji wyszukiwania przepisów */
+#wyszukajPrzepis {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 700px;
+    margin-top: 20px;
+    opacity: 0;
+    animation: slideUp 1s forwards;
+}
+
+#wyszukajPrzepis input,
+#wyszukajPrzepis button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #bdc3c7;
+}
+
+#wyszukajPrzepis button {
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#wyszukajPrzepis button:hover {
+    background-color: #2980b9;
+}
+
+#podpowiedzi {
+    margin-top: 5px;
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Styl wyników wyszukiwania */
+.result {
+    margin-top: 20px;
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Animacje */
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
