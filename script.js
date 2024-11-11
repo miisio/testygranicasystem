@@ -1,43 +1,59 @@
-// Lista dostępnych przestępstw/wykroczeń
-const przepisy = {
-    'obraza funkcjonariusza': {
-        'kodeks karny': 'Art. 226. § 1. Kto znieważa funkcjonariusza publicznego w czasie i w związku z pełnieniem przez niego obowiązków służbowych, podlega grzywnie, karze ograniczenia wolności albo pozbawienia wolności do roku.',
-        'kodeks wykroczeń': 'Art. 51. § 1. Kto w miejscu publicznym znieważa funkcjonariusza publicznego podczas wykonywania przez niego obowiązków służbowych, podlega karze grzywny.',
-    },
-    'kradzież': {
-        'kodeks karny': 'Art. 278. § 1. Kto kradnie rzecz ruchomą, podlega karze pozbawienia wolności od 3 miesięcy do lat 5.',
-        'kodeks wykroczeń': 'Brak odpowiednika w kodeksie wykroczeń.',
-    },
-    'spożywanie alkoholu w miejscu publicznym': {
-        'kodeks wykroczeń': 'Art. 43. § 1. Kto spożywa alkohol w miejscach publicznych, podlega karze grzywny.',
-        'kodeks karny': 'Brak odpowiednika w kodeksie karnym.',
-    },
-};
+// Czas cooldown (w sekundach)
+const cooldownTime = 30;
+let lastActionTime = 0;
 
-// Funkcja do wyszukiwania przepisów
-function wyszukajPrzepis() {
-    const przestepstwo = document.getElementById('przestepstwo').value.trim().toLowerCase();
-    const przepis = przepisy[przestepstwo];
+// Funkcja, która wystawia zatrzymanie
+function wystawZatrzymanie() {
+    const currentTime = Date.now();
+    const timeSinceLastAction = (currentTime - lastActionTime) / 1000; // Czas w sekundach
 
-    if (przepis) {
-        let wynik = `<b>Kodeks Karny:</b> ${przepis['kodeks karny'] || 'Brak przepisu'}<br>
-                     <b>Kodeks Wykroczeń:</b> ${przepis['kodeks wykroczeń'] || 'Brak przepisu'}`;
-        document.getElementById('przepisResult').innerHTML = wynik;
+    if (timeSinceLastAction < cooldownTime) {
+        // Jeśli nie minęło wystarczająco dużo czasu, pokazujemy komunikat o cooldownie
+        const remainingTime = cooldownTime - Math.floor(timeSinceLastAction);
+        document.getElementById('cooldownMessage').innerText = `Proszę poczekać ${remainingTime} sekundy, zanim wystawisz kolejne zatrzymanie.`;
     } else {
-        document.getElementById('przepisResult').innerHTML = 'Nie znaleziono artykułu dla tego wykroczenia/przestępstwa.';
+        // Można wystawić zatrzymanie
+        const zatrzymaniePowod = document.getElementById('zatrzymanie').value.trim();
+        if (zatrzymaniePowod) {
+            // Wysłanie danych do Discorda (lub innej logiki)
+            wyslijZatrzymanieDoDiscorda(zatrzymaniePowod);
+            document.getElementById('cooldownMessage').innerText = 'Zatrzymanie wystawione pomyślnie!';
+            lastActionTime = currentTime; // Zaktualizowanie ostatniego czasu akcji
+            document.getElementById('zatrzymanie').value = ''; // Czyszczenie pola
+        } else {
+            document.getElementById('cooldownMessage').innerText = 'Wpisz powód zatrzymania przed wysłaniem!';
+        }
     }
 }
 
-// Funkcja do wyświetlania podpowiedzi
-function pokazPodpowiedzi() {
-    const input = document.getElementById('przestepstwo').value.trim().toLowerCase();
-    const podpowiedziDiv = document.getElementById('podpowiedzi');
-    podpowiedziDiv.innerHTML = '';
+// Funkcja do wysłania zatrzymania do Discorda
+function wyslijZatrzymanieDoDiscorda(powod) {
+    const webhookURL = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
+    
+    const data = {
+        content: `Zatrzymanie: ${powod}`,
+        embeds: [{
+            title: "Zatrzymanie na granicy",
+            description: `Powód zatrzymania: ${powod}`,
+            color: 16711680
+        }]
+    };
 
-    if (input.length === 0) return;
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Zatrzymanie wysłane do Discorda:', data);
+    })
+    .catch(error => {
+        console.error('Błąd przy wysyłaniu do Discorda:', error);
+    });
+}
 
-    // Filtrujemy przestępstwa/wykroczenia, które pasują do wpisywanego tekstu
-    const pasujacePrzestepstwa = Object.keys(przepisy).filter(przestepstwo => przestepstwo.toLowerCase().includes(input));
-
-    // Wyświetlamy wyniki pasujące do wpisanego tekstu
-   
+// Przypisanie funkcji do przycisku
+document.getElementById('zatrzymanieButton').addEventListener('click', wystawZatrzymanie);
