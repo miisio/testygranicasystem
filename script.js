@@ -1,65 +1,72 @@
+// Webhook URL Discorda
+const discordWebhookUrl = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
+
 // Mockowe dane logowania
 const validUsers = {
-    "michal.nowacki": "haslo123",
-    "cezary.wieczorek": "haslo456",
-    "cezary.poranek": "haslo789",
-    "leonard.bielik": "haslo101",
-    "jan.kowalski": "haslo202"
+    "admin": "granica123",   // Administrator
+    "wzd": "bezpiecznosc123",   // Wydział Zabezpieczeń Straży Granicznej
+    "sg": "straza123"   // Zwykła Straż Graniczna
 };
 
 // Funkcja logowania
 function zaloguj() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const userFullName = {
-        "michal.nowacki": "Michał Nowacki",
-        "cezary.wieczorek": "Cezary Wieczorek",
-        "cezary.poranek": "Cezary Poranek",
-        "leonard.bielik": "Leonard Bielik",
-        "jan.kowalski": "Jan Kowalski"
-    };
 
     if (validUsers[username] && validUsers[username] === password) {
-        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        document.getElementById("userFullName").textContent = userFullName[username];
+        
+        // Dodawanie odpowiedniego stylu w zależności od roli
+        if (username === "wzd") {
+            document.body.classList.add("wzd");
+            document.getElementById("mainContent").classList.add("wzd");
+        } else {
+            document.body.classList.add("sgz");
+            document.getElementById("mainContent").classList.add("sgz");
+        }
     } else {
-        document.getElementById("loginError").textContent = "Nieprawidłowy login lub hasło!";
+        document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
 }
 
-// Funkcja dodawania działania dyscyplinarnego
-function dodajDzialanieDyscyplinarne() {
-    const nick = document.getElementById("dyscyplinarneNick").value;
-    const imieNazwisko = document.getElementById("dyscyplinarneImieNazwisko").value;
-    const typ = document.getElementById("dyscyplinarneTyp").value;
-    const opis = document.getElementById("dyscyplinarneOpis").value;
+// Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
+function dodajZdarzenie() {
+    const nazwaGracza = document.getElementById("nazwaGracza").value;
+    const typZdarzenia = document.getElementById("typZdarzenia").value;
+    const opis = document.getElementById("opis").value;
+    const data = new Date().toLocaleString("pl-PL");
 
-    const newItem = document.createElement("li");
-    newItem.textContent = `${nick} (${imieNazwisko}) - ${typ}: ${opis}`;
-    document.getElementById("dyscyplinarneLista").appendChild(newItem);
+    const zdarzenie = {
+        nazwaGracza,
+        typZdarzenia,
+        opis,
+        data
+    };
 
-    // Wysyłanie danych do webhooka
-    fetch('https://your-webhook-url.com', {
+    // Dodawanie zdarzenia do listy na stronie
+    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
+    const listItem = document.createElement("li");
+    listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza})`;
+    zdarzeniaLista.appendChild(listItem);
+
+    // Wysyłanie powiadomienia na Discorda
+    fetch(discordWebhookUrl, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            nick,
-            imieNazwisko,
-            typ,
-            opis
+            username: "System Raportowania Granicznego",
+            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
+            embeds: [{
+                title: `Nowe zdarzenie: ${zdarzenie.typZdarzenia}`,
+                description: `Nazwa gracza: ${zdarzenie.nazwaGracza}\nOpis: ${zdarzenie.opis}`,
+                color: 3447003,
+                footer: { text: `Data: ${zdarzenie.data}` }
+            }]
         })
-    }).then(response => {
-        if (response.ok) {
-            alert("Działanie dyscyplinarne zapisane!");
-        } else {
-            alert("Błąd podczas wysyłania danych!");
-        }
-    }).catch(error => {
-        console.error("Błąd w połączeniu z webhookiem:", error);
-        alert("Błąd webhooka!");
     });
+
+    // Wyczyść formularz
+    document.getElementById("zdarzenieForm").reset();
 }

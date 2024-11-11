@@ -28,6 +28,11 @@ header {
     margin-right: 10px;
 }
 
+/* Nagłówek */
+h1 {
+    font-size: 2em;
+}
+
 /* Formularze i inne sekcje */
 section {
     background-color: #ffffff;
