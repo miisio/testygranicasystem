@@ -40,7 +40,7 @@ function dodajDzialanieDyscyplinarne() {
     newItem.textContent = `${nick} (${imieNazwisko}) - ${typ}: ${opis}`;
     document.getElementById("dyscyplinarneLista").appendChild(newItem);
 
-    // Przykład webhooka - wysyłanie danych do serwera
+    // Wysyłanie danych do webhooka
     fetch('https://your-webhook-url.com', {
         method: 'POST',
         headers: {
