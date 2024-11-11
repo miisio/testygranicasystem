@@ -1,4 +1,4 @@
-/* Stylowanie sekcji wyszukiwania przepisów */
+/* Stylowanie sekcji formularza */
 #wyszukajPrzepis {
     background-color: #ffffff;
     padding: 20px;
@@ -7,8 +7,6 @@
     width: 90%;
     max-width: 700px;
     margin-top: 20px;
-    opacity: 0;
-    animation: slideUp 1s forwards;
 }
 
 #wyszukajPrzepis input,
@@ -31,35 +29,18 @@
     background-color: #2980b9;
 }
 
-#podpowiedzi {
-    margin-top: 5px;
-    background-color: #ecf0f1;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    max-height: 150px;
-    overflow-y: auto;
+/* Styl komunikatu cooldown */
+#cooldownMessage {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-.suggestion-item {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.suggestion-item:hover {
-    background-color: #3498db;
-    color: white;
-}
-
-/* Styl wyników wyszukiwania */
-.result {
+/* Stopka */
+footer {
     margin-top: 20px;
-    background-color: #ecf0f1;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-/* Animacje */
-@keyframes slideUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+    text-align: center;
+    font-size: 12px;
+    color: #777;
 }
