@@ -13,6 +13,15 @@ const validUsers = {
     "jan.kowalski": { password: "haslo202", role: "szer", fullName: "szer. SG Jan Kowalski" }
 };
 
+// Zdarzenia dyscyplinarne (przykład)
+const dyscyplinarneZdarzenia = [
+    { osoba: "Michał Nowacki", typ: "reprymenda", opis: "Opóźnienie w pracy", rola: "pulkownik" },
+    { osoba: "Cezary Wieczorek", typ: "zwolnienie", opis: "Naruszenie zasad", rola: "kapitan" },
+    { osoba: "Cezary Poranek", typ: "zawieszenie", opis: "Popełnienie błędu", rola: "kpr" },
+    { osoba: "Leonard Bielik", typ: "reprymenda", opis: "Złe zachowanie", rola: "ppulkownik" },
+    { osoba: "Jan Kowalski", typ: "zwolnienie", opis: "Złamanie regulaminu", rola: "szer" }
+];
+
 // Funkcja logowania
 function zaloguj() {
     const username = document.getElementById("username").value;
@@ -47,9 +56,26 @@ function zaloguj() {
         
         // Wyświetlenie pełnego imienia i nazwiska użytkownika
         alert(`Zalogowano jako: ${user.fullName}`);
+
+        // Wyświetlenie odpowiednich działań dyscyplinarnych
+        pokazDyscyplinarneZdarzenia(user.role);
     } else {
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
+}
+
+// Funkcja, która wyświetla działania dyscyplinarne dla odpowiednich ról
+function pokazDyscyplinarneZdarzenia(rolo) {
+    const listaDyscyplinarnych = document.getElementById("dyscyplinarneLista");
+    listaDyscyplinarnych.innerHTML = ""; // Resetowanie listy
+
+    dyscyplinarneZdarzenia.forEach(zdarzenie => {
+        if (zdarzenie.rola === rolo) {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${zdarzenie.osoba} - ${zdarzenie.typ}: ${zdarzenie.opis}`;
+            listaDyscyplinarnych.appendChild(listItem);
+        }
+    });
 }
 
 // Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
@@ -125,17 +151,17 @@ function dodajDyscyplinarneZdarzenie() {
     // Dodawanie zdarzenia do listy na stronie
     const zdarzeniaLista = document.getElementById("zdarzeniaLista");
     const listItem = document.createElement("li");
-    listItem.textContent = `${zdarzenie.data} - Kara: ${zdarzenie.typKary} dla ${zdarzenie.osobaDyscyplinarna} - ${zdarzenie.opisKary}`;
+    listItem.textContent = `${zdarzenie.data} - Kara: ${zdarzenie.typKary} - ${zdarzenie.opisKary} (${zdarzenie.osobaDyscyplinarna})`;
     zdarzeniaLista.appendChild(listItem);
 
-    // Wysyłanie powiadomienia na Discorda dla działań dyscyplinarnych
+    // Przykładowa logika wysyłania powiadomienia do Discorda w przypadku kary
     fetch(discordDyscyplinarneWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             embeds: [{
-                title: `Działanie dyscyplinarne: ${zdarzenie.typKary}`,
-                description: `Osoba: ${zdarzenie.osobaDyscyplinarna}\nOpis kary: ${zdarzenie.opisKary}`,
+                title: `Nowa kara dyscyplinarna: ${zdarzenie.typKary}`,
+                description: `Osoba: ${zdarzenie.osobaDyscyplinarna}\nOpis: ${zdarzenie.opisKary}`,
                 color: 16711680, // Czerwony
                 footer: { text: `Data: ${zdarzenie.data}` }
             }]
@@ -143,5 +169,5 @@ function dodajDyscyplinarneZdarzenie() {
     });
 
     // Wyczyść formularz
-    document.getElementById("dyscyplinarneOptions").reset();
+    document.getElementById("dyscyplinarneForm").reset();
 }
