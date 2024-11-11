@@ -32,8 +32,10 @@ function zaloguj() {
         // Sprawdzanie, czy użytkownik ma dostęp do działań dyscyplinarnych
         if (usersWithDisciplinaryAccess.includes(username)) {
             document.getElementById("dyscyplinarneForm").style.display = "block";
+            document.getElementById("dyscyplinarneSection").style.display = "block";
         } else {
             document.getElementById("dyscyplinarneForm").style.display = "none";
+            document.getElementById("dyscyplinarneSection").style.display = "none";
         }
     } else {
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
