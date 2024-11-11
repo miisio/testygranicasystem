@@ -8,10 +8,9 @@ const discordDyscyplinarneWebhookUrl = "https://discord.com/api/webhooks/1305621
 const validUsers = {
     "michal.nowacki": { password: "haslo123", role: "pulkownik", fullName: "płk SG Michał Nowacki" },
     "cezary.wieczorek": { password: "haslo456", role: "kapitan", fullName: "kpt. SG Cezary Wieczorek" },
+    "cezary.poranek": { password: "haslo789", role: "kpr", fullName: "kpr. SG Cezary Poranek" },
     "leonard.bielik": { password: "haslo101", role: "ppulkownik", fullName: "ppłk SG Leonard Bielik" },
-    "jan.kowalczyk": { password: "haslo303", role: "szer", fullName: "szer. SG Jan Kowalczyk" },
     "jan.kowalski": { password: "haslo202", role: "szer", fullName: "szer. SG Jan Kowalski" }
-    "cezary.poranek": { password: "haslo789", role: "szer", fullName: "kpr. SG Cezary Poranek" }
 };
 
 // Funkcja logowania
@@ -35,6 +34,9 @@ function zaloguj() {
         } else if (user.role === "kapitan") {
             document.body.classList.add("kapitan");
             document.getElementById("mainContent").classList.add("kapitan");
+        } else if (user.role === "kpr") {
+            document.body.classList.add("kpr");
+            document.getElementById("mainContent").classList.add("kpr");
         } else if (user.role === "ppulkownik") {
             document.body.classList.add("ppulkownik");
             document.getElementById("mainContent").classList.add("ppulkownik");
@@ -80,6 +82,22 @@ function dodajZdarzenie() {
                     title: `Nowe zdarzenie: ${zdarzenie.typZdarzenia}`,
                     description: `Nazwa gracza: ${zdarzenie.nazwaGracza}\nOpis: ${zdarzenie.opis}`,
                     color: 3447003,
+                    footer: { text: `Data: ${zdarzenie.data}` }
+                }]
+            })
+        });
+    }
+
+    // Wysyłanie powiadomienia na Discorda dla działań dyscyplinarnych
+    if (typZdarzenia === "zatrzymanie" || typZdarzenia === "reprymenda" || typZdarzenia === "zwolnienie") {
+        fetch(discordDyscyplinarneWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                embeds: [{
+                    title: `Nowe działanie dyscyplinarne: ${zdarzenie.typZdarzenia}`,
+                    description: `Osoba: ${zdarzenie.nazwaGracza}\nOpis: ${zdarzenie.opis}`,
+                    color: 16711680, // Czerwony
                     footer: { text: `Data: ${zdarzenie.data}` }
                 }]
             })
