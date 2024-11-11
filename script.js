@@ -7,10 +7,11 @@ const discordDyscyplinarneWebhookUrl = "https://discord.com/api/webhooks/1305621
 // Mockowe dane logowania z przypisanymi hasłami oraz informacjami o rolach
 const validUsers = {
     "michal.nowacki": { password: "haslo123", role: "pulkownik", fullName: "płk SG Michał Nowacki" },
-    "cezary.wieczorek": { password: "cezary123", role: "kapitan", fullName: "kpt. SG Cezary Wieczorek" },
-    "leonard.bielik": { password: "leonard123", role: "ppulkownik", fullName: "ppłk SG Leonard Bielik" },
-    "jan.kowalczyk": { password: "jan123", role: "szer", fullName: "szer. SG Jan Kowalczyk" },
-    "jan.kowalski": { password: "kowalski123", role: "szer", fullName: "szer. SG Jan Kowalski" }
+    "cezary.wieczorek": { password: "haslo456", role: "kapitan", fullName: "kpt. SG Cezary Wieczorek" },
+    "leonard.bielik": { password: "haslo101", role: "ppulkownik", fullName: "ppłk SG Leonard Bielik" },
+    "jan.kowalczyk": { password: "haslo303", role: "szer", fullName: "szer. SG Jan Kowalczyk" },
+    "jan.kowalski": { password: "haslo202", role: "szer", fullName: "szer. SG Jan Kowalski" }
+    "cezary.poranek": { password: "haslo789", role: "szer", fullName: "kpr. SG Cezary Poranek" }
 };
 
 // Funkcja logowania
@@ -75,8 +76,6 @@ function dodajZdarzenie() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                username: "System Raportowania Granicznego",
-                avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
                 embeds: [{
                     title: `Nowe zdarzenie: ${zdarzenie.typZdarzenia}`,
                     description: `Nazwa gracza: ${zdarzenie.nazwaGracza}\nOpis: ${zdarzenie.opis}`,
@@ -116,8 +115,6 @@ function dodajDyscyplinarneZdarzenie() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            username: "System Raportowania Granicznego",
-            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
             embeds: [{
                 title: `Działanie dyscyplinarne: ${zdarzenie.typKary}`,
                 description: `Osoba: ${zdarzenie.osobaDyscyplinarna}\nOpis kary: ${zdarzenie.opisKary}`,
