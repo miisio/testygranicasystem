@@ -1,108 +1,62 @@
-/* Ogólne stylowanie */
+/* Podstawowe style */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #f5f7fa;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
 }
 
-header {
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    padding: 20px;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-/* Flaga Polski */
-.polska-flaga {
-    height: 30px;
-    margin-right: 10px;
-}
-
-/* Nagłówek */
-h1 {
-    font-size: 2em;
-}
-
-/* Formularze i inne sekcje */
-section {
+/* Sekcja logowania */
+#loginSection {
     background-color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    width: 90%;
-    max-width: 700px;
-    opacity: 0;
-    animation: slideUp 1s forwards;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-label {
-    display: block;
-    margin-top: 10px;
+#loginSection form {
+    display: flex;
+    flex-direction: column;
 }
 
-input, select, textarea, button {
-    width: 100%;
+#loginSection input,
+#loginSection button {
     padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #bdc3c7;
+    margin: 5px 0;
+}
+
+#error {
+    color: red;
+}
+
+/* Główna zawartość */
+#mainContent {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Stylizacja dla ról użytkowników */
+.admin {
+    background-color: #f1c40f;
+}
+
+.sg {
+    background-color: #1abc9c;
 }
 
 button {
-    background-color: #3498db;
-    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-
-.error {
-    color: red;
-    font-size: 0.9em;
-}
-
-textarea {
-    height: 100px;
-}
-
-ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-li {
-    padding: 10px;
-    background-color: #ecf0f1;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-/* Animacje */
-@keyframes slideUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Stopka */
-footer {
-    margin-top: auto;
-    padding: 10px;
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    text-align: center;
-    width: 100%;
 }
