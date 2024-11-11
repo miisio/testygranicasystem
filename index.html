@@ -3,31 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Graniczny</title>
+    <title>System Raportowania Granicznego</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Sekcja logowania -->
-    <div id="loginSection">
+    <section id="loginSection">
         <h2>Logowanie</h2>
-        <form onsubmit="zaloguj(); return false;">
+        <form id="loginForm" onsubmit="zaloguj(); return false;">
+            <label for="username">Login:</label>
             <input type="text" id="username" placeholder="Login" required>
+            <label for="password">Hasło:</label>
             <input type="password" id="password" placeholder="Hasło" required>
             <button type="submit">Zaloguj</button>
-            <p id="loginError" style="color:red;"></p>
+            <p id="loginError" style="color: red;"></p>
         </form>
-    </div>
+    </section>
 
-    <!-- Sekcja główna (po zalogowaniu) -->
-    <div id="mainContent" style="display: none;">
+    <!-- Sekcja główna po zalogowaniu -->
+    <section id="mainContent" style="display: none;">
         <h2>Witaj, <span id="userFullName"></span></h2>
 
         <!-- Sekcja działań dyscyplinarnych -->
         <div id="dyscyplinarneSection" style="display: none;">
             <h3>Działania Dyscyplinarne</h3>
             <form id="dyscyplinarneForm" onsubmit="dodajDzialanieDyscyplinarne(); return false;">
+                <label for="dyscyplinarneNick">Nick osoby:</label>
+                <input type="text" id="dyscyplinarneNick" placeholder="Nick osoby" required>
+                <label for="dyscyplinarneImieNazwisko">Imię i Nazwisko osoby:</label>
+                <input type="text" id="dyscyplinarneImieNazwisko" placeholder="Imię i Nazwisko osoby" required>
+                <label for="dyscyplinarneTyp">Typ działania:</label>
                 <input type="text" id="dyscyplinarneTyp" placeholder="Typ działania" required>
+                <label for="dyscyplinarneOpis">Opis działania:</label>
                 <textarea id="dyscyplinarneOpis" placeholder="Opis działania" required></textarea>
                 <button type="submit">Dodaj Działanie Dyscyplinarne</button>
             </form>
@@ -38,8 +46,14 @@
         <div id="mandatySection" style="display: none;">
             <h3>Mandaty</h3>
             <form id="mandatyForm" onsubmit="dodajMandat(); return false;">
+                <label for="mandatNick">Nick osoby:</label>
+                <input type="text" id="mandatNick" placeholder="Nick osoby" required>
+                <label for="mandatImieNazwisko">Imię i Nazwisko osoby:</label>
+                <input type="text" id="mandatImieNazwisko" placeholder="Imię i Nazwisko osoby" required>
+                <label for="mandatKwota">Kwota Mandatu:</label>
                 <input type="number" id="mandatKwota" placeholder="Kwota Mandatu" required>
-                <textarea id="mandatOpis" placeholder="Opis Mandatu" required></textarea>
+                <label for="mandatOpis">Opis:</label>
+                <textarea id="mandatOpis" placeholder="Opis mandatu" required></textarea>
                 <button type="submit">Dodaj Mandat</button>
             </form>
             <ul id="mandatyLista"></ul>
@@ -49,12 +63,21 @@
         <div id="zatrzymaniaSection" style="display: none;">
             <h3>Zatrzymania</h3>
             <form id="zatrzymaniaForm" onsubmit="dodajZatrzymanie(); return false;">
+                <label for="zatrzymanieNick">Nick osoby:</label>
+                <input type="text" id="zatrzymanieNick" placeholder="Nick osoby" required>
+                <label for="zatrzymanieImieNazwisko">Imię i Nazwisko osoby:</label>
+                <input type="text" id="zatrzymanieImieNazwisko" placeholder="Imię i Nazwisko osoby" required>
+                <label for="zatrzymanieOpis">Opis zatrzymania:</label>
                 <textarea id="zatrzymanieOpis" placeholder="Opis zatrzymania" required></textarea>
                 <button type="submit">Dodaj Zatrzymanie</button>
             </form>
             <ul id="zatrzymaniaLista"></ul>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 System Raportowania Granicznego - Wszystkie prawa zastrzeżone</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

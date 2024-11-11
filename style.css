@@ -1,55 +1,103 @@
-/* Podstawowe style dla logowania i głównej strony */
+/* Ogólne stylowanie */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f5f7fa;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
-h2, h3 {
-    color: #333;
-}
-
-#loginSection, #mainContent {
-    width: 80%;
-    margin: 0 auto;
+header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-form input, form textarea, form button {
+/* Flaga Polski */
+.polska-flaga {
+    height: 30px;
+    margin-right: 10px;
+}
+
+/* Formularze i inne sekcje */
+section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 90%;
+    max-width: 700px;
+    opacity: 0;
+    animation: slideUp 1s forwards;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select, textarea, button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+    margin-top: 5px;
     border-radius: 5px;
+    border: 1px solid #bdc3c7;
 }
 
-form button {
-    background-color: #4CAF50;
+button {
+    background-color: #3498db;
     color: white;
-    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-form button:hover {
-    background-color: #45a049;
+button:hover {
+    background-color: #2980b9;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
+textarea {
+    height: 100px;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
+    padding-left: 0;
 }
 
-ul li {
-    padding: 8px;
+li {
+    padding: 10px;
+    background-color: #ecf0f1;
     margin: 5px 0;
-    background-color: #f1f1f1;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
-#loginError {
-    color: red;
+/* Animacje */
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Stopka */
+footer {
+    margin-top: auto;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    width: 100%;
 }

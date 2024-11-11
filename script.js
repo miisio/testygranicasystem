@@ -1,140 +1,78 @@
-// Użytkownicy i hasła
+// Mockowe dane logowania
 const validUsers = {
     "michal.nowacki": "haslo123",
     "cezary.wieczorek": "haslo456",
     "cezary.poranek": "haslo789",
     "leonard.bielik": "haslo101",
-    "jan.kowalski": "haslo202",
-    "jan.kowalczyk": "haslo303"
+    "jan.kowalski": "haslo202"
 };
-
-// Użytkownicy, którzy mają dostęp do działań dyscyplinarnych
-const usersWithDisciplinaryAccess = [
-    "michal.nowacki",
-    "cezary.wieczorek",
-    "leonard.bielik"
-];
-
-// Użytkownicy, którzy mają dostęp do mandatów i zatrzymań
-const usersWithMandateAccess = [
-    "michal.nowacki",
-    "cezary.wieczorek",
-    "cezary.poranek",
-    "leonard.bielik",
-    "jan.kowalski"
-];
 
 // Funkcja logowania
 function zaloguj() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const userFullName = {
+        "michal.nowacki": "Michał Nowacki",
+        "cezary.wieczorek": "Cezary Wieczorek",
+        "cezary.poranek": "Cezary Poranek",
+        "leonard.bielik": "Leonard Bielik",
+        "jan.kowalski": "Jan Kowalski"
+    };
 
-    // Sprawdzanie poprawności logowania
     if (validUsers[username] && validUsers[username] === password) {
-        sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
+        sessionStorage.setItem("username", username);
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
+        document.getElementById("userFullName").textContent = userFullName[username];
 
-        // Ustawianie pełnego imienia i nazwiska w zależności od użytkownika
-        document.getElementById("userFullName").textContent = getFullName(username);
-
-        // Sprawdzanie, czy użytkownik ma dostęp do działań dyscyplinarnych
-        if (usersWithDisciplinaryAccess.includes(username)) {
-            document.getElementById("dyscyplinarneForm").style.display = "block";
+        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "cezary.poranek") {
             document.getElementById("dyscyplinarneSection").style.display = "block";
-        } else {
-            document.getElementById("dyscyplinarneForm").style.display = "none";
-            document.getElementById("dyscyplinarneSection").style.display = "none";
         }
-
-        // Sprawdzanie, czy użytkownik ma dostęp do mandatów i zatrzymań
-        if (usersWithMandateAccess.includes(username)) {
-            document.getElementById("mandatyForm").style.display = "block";
+        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "jan.kowalski") {
             document.getElementById("mandatySection").style.display = "block";
-            document.getElementById("zatrzymaniaForm").style.display = "block";
+        }
+        if (username === "leonard.bielik" || username === "jan.kowalski") {
             document.getElementById("zatrzymaniaSection").style.display = "block";
-        } else {
-            document.getElementById("mandatyForm").style.display = "none";
-            document.getElementById("mandatySection").style.display = "none";
-            document.getElementById("zatrzymaniaForm").style.display = "none";
-            document.getElementById("zatrzymaniaSection").style.display = "none";
         }
     } else {
-        document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
+        document.getElementById("loginError").textContent = "Niepoprawny login lub hasło.";
     }
 }
 
-// Funkcja ustawiająca pełne imię i nazwisko użytkownika
-function getFullName(username) {
-    const fullNames = {
-        "michal.nowacki": "Płk SG Michał Nowacki",
-        "cezary.wieczorek": "Kpt. SG Cezary Wieczorek",
-        "cezary.poranek": "Kpr. SG Cezary Poranek",
-        "leonard.bielik": "Ppłk SG Leonard Bielik",
-        "jan.kowalski": "Szer. SG Jan Kowalski",
-        "jan.kowalczyk": "Szer. SG Jan Kowalski"
-    };
-    return fullNames[username] || "";
-}
-
-// Funkcja dodająca działanie dyscyplinarne
+// Funkcja dodawania działania dyscyplinarnego
 function dodajDzialanieDyscyplinarne() {
-    const username = document.getElementById("username").value;
-    const dzialanie = document.getElementById("dyscyplinarneTyp").value;
+    const nick = document.getElementById("dyscyplinarneNick").value;
+    const imieNazwisko = document.getElementById("dyscyplinarneImieNazwisko").value;
+    const typ = document.getElementById("dyscyplinarneTyp").value;
     const opis = document.getElementById("dyscyplinarneOpis").value;
-    const data = new Date().toLocaleString("pl-PL");
 
-    const dzialanieInfo = {
-        dzialanie,
-        opis,
-        data
-    };
-
-    // Dodawanie do listy działań dyscyplinarnych
+    const lista = document.getElementById("dyscyplinarneLista");
     const li = document.createElement("li");
-    li.textContent = `${data}: ${dzialanie} - ${opis}`;
-    document.getElementById("dyscyplinarneLista").appendChild(li);
-
-    // Resetowanie formularza
-    document.getElementById("dyscyplinarneForm").reset();
+    li.textContent = `${imieNazwisko} (${nick}) - Typ: ${typ}, Opis: ${opis}`;
+    lista.appendChild(li);
 }
 
-// Funkcja dodająca mandat
+// Funkcja dodawania mandatu
 function dodajMandat() {
+    const nick = document.getElementById("mandatNick").value;
+    const imieNazwisko = document.getElementById("mandatImieNazwisko").value;
     const kwota = document.getElementById("mandatKwota").value;
     const opis = document.getElementById("mandatOpis").value;
-    const data = new Date().toLocaleString("pl-PL");
 
-    const mandatInfo = {
-        kwota,
-        opis,
-        data
-    };
-
-    // Dodawanie do listy mandatów
+    const lista = document.getElementById("mandatyLista");
     const li = document.createElement("li");
-    li.textContent = `${data}: Mandat - ${kwota} PLN: ${opis}`;
-    document.getElementById("mandatyLista").appendChild(li);
-
-    // Resetowanie formularza
-    document.getElementById("mandatyForm").reset();
+    li.textContent = `${imieNazwisko} (${nick}) - Kwota: ${kwota} zł, Opis: ${opis}`;
+    lista.appendChild(li);
 }
 
-// Funkcja dodająca zatrzymanie
+// Funkcja dodawania zatrzymania
 function dodajZatrzymanie() {
+    const nick = document.getElementById("zatrzymanieNick").value;
+    const imieNazwisko = document.getElementById("zatrzymanieImieNazwisko").value;
     const opis = document.getElementById("zatrzymanieOpis").value;
-    const data = new Date().toLocaleString("pl-PL");
 
-    const zatrzymanieInfo = {
-        opis,
-        data
-    };
-
-    // Dodawanie do listy zatrzymań
+    const lista = document.getElementById("zatrzymaniaLista");
     const li = document.createElement("li");
-    li.textContent = `${data}: Zatrzymanie - ${opis}`;
-    document.getElementById("zatrzymaniaLista").appendChild(li);
-
-    // Resetowanie formularza
-    document.getElementById("zatrzymaniaForm").reset();
+    li.textContent = `${imieNazwisko} (${nick}) - Opis: ${opis}`;
+    lista.appendChild(li);
 }
