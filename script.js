@@ -33,6 +33,7 @@ function zaloguj() {
         if (usersWithDisciplinaryAccess.includes(username)) {
             document.getElementById("dyscyplinarneForm").style.display = "block";
             document.getElementById("dyscyplinarneSection").style.display = "block";
+            document.getElementById("dyscyplinarneSection").classList.remove("hidden");
         } else {
             document.getElementById("dyscyplinarneForm").style.display = "none";
             document.getElementById("dyscyplinarneSection").style.display = "none";
@@ -42,75 +43,55 @@ function zaloguj() {
     }
 }
 
-// Funkcja zwracająca pełne imię i nazwisko użytkownika
+// Funkcja ustawiająca pełne imię i nazwisko użytkownika
 function getFullName(username) {
-    const names = {
-        "michal.nowacki": "płk SG Michał Nowacki",
-        "cezary.wieczorek": "kpt. SG Cezary Wieczorek",
-        "cezary.poranek": "kpr. SG Cezary Poranek",
-        "leonard.bielik": "ppłk SG Leonard Bielik",
-        "jan.kowalski": "szer. SG Jan Kowalski",
-        "jan.kowalczyk": "szer. SG Jan Kowalczyk"
+    const fullNames = {
+        "michal.nowacki": "Płk SG Michał Nowacki",
+        "cezary.wieczorek": "Kpt. SG Cezary Wieczorek",
+        "cezary.poranek": "Kpr. SG Cezary Poranek",
+        "leonard.bielik": "Ppłk SG Leonard Bielik",
+        "jan.kowalski": "Szer. SG Jan Kowalski",
+        "jan.kowalczyk": "Szer. SG Jan Kowalczyk"
     };
-    return names[username] || "Użytkownik";
+    return fullNames[username] || "";
 }
 
-// Funkcja dodająca zdarzenie (np. mandat, zatrzymanie, nakaz)
-function dodajZdarzenie() {
-    const nazwaGracza = document.getElementById("nazwaGracza").value;
-    const typZdarzenia = document.getElementById("typZdarzenia").value;
-    const opis = document.getElementById("opis").value;
+// Funkcja dodająca działanie dyscyplinarne
+function dodajDzialanieDyscyplinarne() {
+    const username = document.getElementById("username").value;
+    const dzialanie = document.getElementById("dyscyplinarneTyp").value;
+    const opis = document.getElementById("dyscyplinarneOpis").value;
     const data = new Date().toLocaleString("pl-PL");
 
-    const zdarzenie = {
-        nazwaGracza,
-        typZdarzenia,
+    const dzialanieInfo = {
+        dzialanie,
         opis,
         data
     };
 
-    // Dodawanie zdarzenia do listy
-    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
+    // Dodawanie do listy działań dyscyplinarnych
+    const dzialaniaLista = document.getElementById("dyscyplinarneLista");
     const listItem = document.createElement("li");
-    listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza})`;
-    zdarzeniaLista.appendChild(listItem);
+    listItem.textContent = `${dzialanieInfo.data} - ${dzialanieInfo.dzialanie}: ${dzialanieInfo.opis} (${username})`;
+    dzialaniaLista.appendChild(listItem);
 
-    // Resetowanie formularza
-    document.getElementById("zdarzenieForm").reset();
-}
+    // Wysyłanie na Discorda (możesz dostosować webhook zależnie od działania)
+    const discordWebhookUrl = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y"; // Twój webhook
+    fetch(discordWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: "System Raportowania Granicznego",
+            avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Poland.svg/1200px-Flag_of_Poland.svg.png",
+            embeds: [{
+                title: `Nowe działanie dyscyplinarne: ${dzialanieInfo.dzialanie}`,
+                description: `Imię i nazwisko: ${getFullName(username)}\nOpis: ${dzialanieInfo.opis}`,
+                color: 3447003,
+                footer: { text: `Data: ${dzialanieInfo.data}` }
+            }]
+        })
+    });
 
-// Funkcja dodająca działanie dyscyplinarne
-function dodajDyscyplinarne() {
-    const typKary = document.getElementById("typKary").value;
-    const osobaDyscyplinarna = document.getElementById("osobaDyscyplinarna").value;
-    const opisKary = document.getElementById("opisKary").value;
-    const data = new Date().toLocaleString("pl-PL");
-
-    const dzialanie = {
-        typKary,
-        osobaDyscyplinarna,
-        opisKary,
-        data
-    };
-
-    // Dodawanie działania dyscyplinarnego do listy
-    const dyscyplinarneLista = document.getElementById("dyscyplinarneLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${dzialanie.data} - ${dzialanie.typKary}: ${dzialanie.opisKary} (${dzialanie.osobaDyscyplinarna})`;
-    dyscyplinarneLista.appendChild(listItem);
-
-    // Resetowanie formularza
+    // Wyczyść formularz
     document.getElementById("dyscyplinarneForm").reset();
-}
-
-// Funkcja do wylogowania
-function wyloguj() {
-    sessionStorage.removeItem("username");
-    document.getElementById("loginSection").style.display = "block";
-    document.getElementById("mainContent").style.display = "none";
-}
-
-// Ustawienie powiadomienia dla nieprawidłowego logowania
-function bladLogowania() {
-    document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
 }

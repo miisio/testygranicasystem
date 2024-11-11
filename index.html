@@ -3,70 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Mandatów i Działań Dyscyplinarnych</title>
+    <title>System Raportowania Granicznego</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Poland.svg/1280px-Flag_of_Poland.svg.png" alt="Flaga Polski" class="polska-flaga">
+            <h1>System Raportowania Granicznego</h1>
+        </div>
+    </header>
 
-    <!-- Sekcja logowania -->
-    <div id="loginSection">
+    <section id="loginSection">
         <h2>Logowanie</h2>
-        <label for="username">Nazwa użytkownika:</label>
-        <input type="text" id="username" required>
-        <br>
-        <label for="password">Hasło:</label>
-        <input type="password" id="password" required>
-        <br>
-        <button onclick="zaloguj()">Zaloguj się</button>
-        <p id="loginError" style="color: red;"></p>
-    </div>
+        <form id="loginForm">
+            <label for="username">Nazwa Użytkownika:</label>
+            <input type="text" id="username" required>
 
-    <!-- Sekcja główna po zalogowaniu -->
-    <div id="mainContent" style="display: none;">
-        <h2>Witaj, <span id="userFullName"></span></h2>
-        
-        <!-- Sekcja działań dyscyplinarnych -->
-        <h3>Działania dyscyplinarne</h3>
-        <ul id="dyscyplinarneLista"></ul>
+            <label for="password">Hasło:</label>
+            <input type="password" id="password" required>
 
-        <!-- Formularz do dodania nowego zdarzenia -->
-        <h3>Dodaj nowe zdarzenie</h3>
-        <form id="zdarzenieForm">
-            <label for="nazwaGracza">Nazwa gracza:</label>
-            <input type="text" id="nazwaGracza" required>
-            <br>
-            <label for="typZdarzenia">Typ zdarzenia:</label>
-            <select id="typZdarzenia">
-                <option value="mandat">Mandat</option>
-                <option value="zatrzymanie">Zatrzymanie</option>
-                <option value="nakaz">Nakaz</option>
-            </select>
-            <br>
-            <label for="opis">Opis:</label>
-            <textarea id="opis" required></textarea>
-            <br>
-            <button type="button" onclick="dodajZdarzenie()">Dodaj Zdarzenie</button>
+            <button type="button" onclick="zaloguj()">Zaloguj się</button>
         </form>
+        <p id="loginError" class="error"></p>
+    </section>
 
-        <!-- Sekcja dla działań dyscyplinarnych -->
-        <h3>Dodaj Działanie Dyscyplinarne</h3>
-        <form id="dyscyplinarneForm">
-            <label for="typKary">Typ kary:</label>
-            <select id="typKary">
-                <option value="reprymenda">Reprymenda</option>
-                <option value="zawieszenie">Zawieszenie</option>
-                <option value="zwolnienie">Zwolnienie</option>
-            </select>
-            <br>
-            <label for="osobaDyscyplinarna">Osoba dyscyplinarna:</label>
-            <input type="text" id="osobaDyscyplinarna" required>
-            <br>
-            <label for="opisKary">Opis kary:</label>
-            <textarea id="opisKary" required></textarea>
-            <br>
-            <button type="button" onclick="dodajDyscyplinarne()">Dodaj Karę Dyscyplinarną</button>
-        </form>
-    </div>
+    <main id="mainContent" style="display: none;">
+        <h2 id="userFullName"></h2> <!-- Wyświetla imię i nazwisko użytkownika -->
+
+        <section id="dyscyplinarneSection" class="hidden">
+            <h2>Dodaj Działanie Dyscyplinarne</h2>
+            <form id="dyscyplinarneForm">
+                <label for="dyscyplinarneTyp">Typ Działania:</label>
+                <select id="dyscyplinarneTyp">
+                    <option value="reprymenda">Reprymenda</option>
+                    <option value="zawieszenie">Zawieszenie</option>
+                    <option value="zwolnienie">Zwolnienie Dyscyplinarne</option>
+                </select>
+
+                <label for="dyscyplinarneOpis">Opis:</label>
+                <textarea id="dyscyplinarneOpis" required></textarea>
+
+                <button type="button" onclick="dodajDzialanieDyscyplinarne()">Dodaj Działanie</button>
+            </form>
+        </section>
+
+        <section id="dyscyplinarneLista">
+            <h2>Działania Dyscyplinarne</h2>
+            <ul id="dyscyplinarneLista"></ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 System Raportowania Granicznego - Wszystkie prawa zastrzeżone</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
