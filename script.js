@@ -1,7 +1,9 @@
-// Webhook URL dla mandatów
-const discordWebhookUrlMandat = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
-// Webhook URL dla nowych zdarzeń dyscyplinarnych
-const discordWebhookUrlDyscyplinarne = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y";
+// Webhook URL dla mandatów (dwa różne)
+const discordWebhookUrlMandat1 = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
+const discordWebhookUrlMandat2 = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
+
+// Webhook URL dla nowych zdarzeń dyscyplinarnych (zatrzymanie, reprymenda, zwolnienie)
+const discordWebhookUrlDyscyplinarne = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
 
 // Spersonalizowane dane logowania
 const validUsers = {
@@ -13,8 +15,8 @@ const validUsers = {
     "jan.kowalczyk": { password: "haslo303", name: "Szer. SG Jan Kowalczyk" },
     "adam.cipkiewicz": { password: "haslo404", name: "Szer. SG Adam Cipkiewicz" },
     "admin": { password: "granica123", name: "Administrator" },
-    "wzd": { password: "bezpiecznosc123", name: "Wydział Zabezpieczeń Straży Granicznej" },
-    "sg": { password: "straza123", name: "Zwykła Straż Graniczna" },
+    "Wydział Zabezpieczneia Działań": { password: "bezpiecznosc123", name: "Wydział Zabezpieczeń Straży Granicznej" },
+    "Straż Graniczna": { password: "straza123", name: "Zwykła Straż Graniczna" },
 };
 
 // Funkcja logowania
@@ -72,11 +74,14 @@ function dodajZdarzenie() {
     listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza}) - Wystawione przez: ${zdarzenie.userName}`;
     zdarzeniaLista.appendChild(listItem);
 
-    // Wybór odpowiedniego webhooka dla typu zdarzenia
-    let webhookUrl = discordWebhookUrlMandat;
+    // Wybór odpowiedniego webhooka w zależności od typu zdarzenia
+    let webhookUrl = "";
+
     if (typZdarzenia === "mandat") {
-        webhookUrl = discordWebhookUrlMandat;
-    } else {
+        // Wybór losowego webhooka dla mandatów
+        webhookUrl = Math.random() > 0.5 ? discordWebhookUrlMandat1 : discordWebhookUrlMandat2;
+    } else if (typZdarzenia === "zatrzymanie" || typZdarzenia === "reprymenda" || typZdarzenia === "zwolnienie") {
+        // Webhook dla zdarzeń dyscyplinarnych
         webhookUrl = discordWebhookUrlDyscyplinarne;
     }
 
@@ -114,6 +119,7 @@ function dodajZdarzenie() {
         }]
     };
 
+    // Wysyłanie danych na odpowiedni webhook (w zależności od typu zdarzenia)
     fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
