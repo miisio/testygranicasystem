@@ -28,16 +28,9 @@ header {
     margin-right: 10px;
 }
 
-/* Logo Straży Granicznej */
-.logo-sg {
-    height: 30px; /* Zmniejszone do 30px, aby pasowało do wysokości flagi */
-    margin-right: 10px;
-}
-
 /* Nagłówek */
 h1 {
     font-size: 2em;
-    margin-left: 10px;
 }
 
 /* Formularze i inne sekcje */
@@ -112,4 +105,4 @@ footer {
     color: #ecf0f1;
     text-align: center;
     width: 100%;
-}
+} 
