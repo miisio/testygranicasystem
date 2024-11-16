@@ -30,7 +30,7 @@ header {
 
 /* Logo Straży Granicznej */
 .logo-sg {
-    height: 40px;
+    height: 30px; /* Zmniejszone do 30px, aby pasowało do wysokości flagi */
     margin-right: 10px;
 }
 
