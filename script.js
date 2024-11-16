@@ -42,15 +42,16 @@ function zaloguj(event) {
         }
 
         // Jeśli to Michał Nowacki, Leonard Bielik, lub Cezary Wieczorek, dodaj opcje dyscyplinarne
-        if (["michal.nowacki", "cezary.wieczorek", "leonard.bielik"].includes(username)) {
+        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "leonard.bielik") {
             document.getElementById("dyscyplinarneOptions").style.display = "block";
         }
+
     } else {
-        document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
+        document.getElementById("loginError").innerText = "Błędne dane logowania!";
     }
 }
 
-// Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
+// Funkcja wysyłania zdarzenia do Discorda (mandaty, zatrzymania, etc.)
 function dodajZdarzenie() {
     const nazwaGracza = document.getElementById("nazwaGracza").value;
     const nickDiscord = document.getElementById("nickDiscord").value;
@@ -120,12 +121,12 @@ function dodajZdarzenie() {
     });
 }
 
-// Funkcje do dodawania działań dyscyplinarnych
+// Funkcja dodawania zdarzenia dyscyplinarnego
 function dodajDyscyplinarne() {
     const typDyscypliny = document.getElementById("typDyscypliny").value;
     const opisDyscypliny = document.getElementById("opisDyscypliny").value;
-    const imieNazwiskoGracza = document.getElementById("nazwaGracza").value;
-    const nickDiscordGracza = document.getElementById("nickDiscord").value;
+    const imieNazwiskoGracza = document.getElementById("imieDyscypliny").value;
+    const nickDiscordGracza = document.getElementById("nickDyscypliny").value;
     const data = new Date().toLocaleString("pl-PL");
     const userName = sessionStorage.getItem("userName");  // Pobieranie imienia i nazwiska użytkownika z sesji
 
@@ -183,23 +184,4 @@ function dodajDyscyplinarne() {
     .catch(error => {
         console.error('Błąd podczas wysyłania dyscypliny do Discorda:', error);
     });
-}
-
-// Dodawanie nowych rodzajów dyscyplinarnych (nowe przyciski)
-function dodajZawieszenie() {
-    const typDyscypliny = "Zawieszenie";
-    const opisDyscypliny = "Zawieszenie na okres 30 dni.";
-    dodajDyscyplinarne();
-}
-
-function dodajReprymende() {
-    const typDyscypliny = "Reprymenda";
-    const opisDyscypliny = "Reprymenda za złamanie regulaminu.";
-    dodajDyscyplinarne();
-}
-
-function dodajZwolnienie() {
-    const typDyscypliny = "Zwolnienie Dyscyplinarne";
-    const opisDyscypliny = "Zwolnienie z służby z powodu rażącego naruszenia regulaminu.";
-    dodajDyscyplinarne();
 }
