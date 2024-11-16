@@ -10,7 +10,12 @@ const validUsers = {
     "michal.nowacki": { password: "haslo123", name: "Płk SG Michał Nowacki" },
     "cezary.wieczorek": { password: "haslo456", name: "Kpt. SG Cezary Wieczorek" },
     "leonard.bielik": { password: "haslo101", name: "Ppłk SG Leonard Bielik" },
-    "cezary.poranek": { password: "haslo789", name: "Ppor. SG Cezary Poranek" }
+    "cezary.poranek": { password: "haslo789", name: "Ppor. SG Cezary Poranek" },
+    "jan.kowalski": { password: "haslo202", name: "Szer. SG Jan Kowalski" },
+    "adam.cipkiewicz": { password: "haslo404", name: "Szer. SG Adam Cipkiewicz" }
+    "wzd": { password: "haslo2137", name: "Wydział Zabezepiczenia Działań" }
+    "sg": { password: "haslo2115", name: "Straż Graniczna" }
+    "adm": { password: "admin69", name: "Administrator" }
 };
 
 // Funkcja logowania
