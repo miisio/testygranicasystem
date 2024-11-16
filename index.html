@@ -20,14 +20,14 @@
     <!-- Sekcja logowania -->
     <section id="loginSection">
         <h2>Logowanie</h2>
-        <form id="loginForm">
+        <form id="loginForm" onsubmit="zaloguj(event)">
             <label for="username">Nazwa Użytkownika:</label>
             <input type="text" id="username" required>
 
             <label for="password">Hasło:</label>
             <input type="password" id="password" required>
 
-            <button type="button" onclick="zaloguj()">Zaloguj się</button>
+            <button type="submit">Zaloguj się</button>
         </form>
         <p id="loginError" class="error"></p>
     </section>
@@ -57,6 +57,31 @@
             </form>
         </section>
 
+        <!-- Opcje Dyscyplinarne -->
+        <section id="dyscyplinarneOptions" style="display: none;">
+            <h3>Opcje Dyscyplinarne</h3>
+
+            <!-- Nowe pola do wprowadzenia -->
+            <label for="nickDiscordDyscyplina">Nick na Discordzie:</label>
+            <input type="text" id="nickDiscordDyscyplina" required>
+
+            <label for="imieNazwiskoDyscyplina">Imię i Nazwisko:</label>
+            <input type="text" id="imieNazwiskoDyscyplina" required>
+
+            <label for="typDyscypliny">Typ Działania:</label>
+            <select id="typDyscypliny">
+                <option value="zawieszenie">Zawieszenie</option>
+                <option value="reprymenda">Reprymenda</option>
+                <option value="zwolnienie">Zwolnienie Dyscyplinarne</option>
+            </select>
+
+            <label for="opisDyscypliny">Opis:</label>
+            <textarea id="opisDyscypliny" required></textarea>
+
+            <button type="button" onclick="dodajDyscyplinarne()">Zarejestruj Działanie</button>
+        </section>
+
+        <!-- Lista Zdarzeń -->
         <section id="listaZdarzen">
             <h2>Lista Zdarzeń</h2>
             <ul id="zdarzeniaLista"></ul>
