@@ -53,64 +53,45 @@ function zaloguj(event) {
 // Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
 function dodajZdarzenie() {
     const nazwaGracza = document.getElementById("nazwaGracza").value;
+    const nickDiscord = document.getElementById("nickDiscord").value;
     const typZdarzenia = document.getElementById("typZdarzenia").value;
     const opis = document.getElementById("opis").value;
     const data = new Date().toLocaleString("pl-PL");
-    const userName = sessionStorage.getItem("userName");  // Pobieranie imienia i nazwiska użytkownika z sesji
+    const userName = sessionStorage.getItem("userName");
 
     const zdarzenie = {
-        nazwaGracza,
         typZdarzenia,
         opis,
+        nazwaGracza,
+        nickDiscord,
         data,
         userName
     };
 
-    // Dodawanie zdarzenia do listy na stronie
-    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza}) - Wystawione przez: ${zdarzenie.userName}`;
-    zdarzeniaLista.appendChild(listItem);
-
-    // Wybór webhooka w zależności od typu zdarzenia
-    let webhookUrl = "";
-    let embedTitle = "";
-    let embedDescription = "";
-    
-    if (typZdarzenia === "mandat") {
-        webhookUrl = discordWebhookUrlMandat;
-        embedTitle = "Nowy Mandat";
-        embedDescription = zdarzenie.opis;
-    } else if (typZdarzenia === "zatrzymanie") {
-        webhookUrl = discordWebhookUrlZatrzymanie;
-        embedTitle = "Nowe Zatrzymanie";
-        embedDescription = zdarzenie.opis;
-    }
-
     const embedData = {
         content: `Nowe zdarzenie: ${typZdarzenia}`,
         embeds: [{
-            title: embedTitle,
-            description: embedDescription,
+            title: `${typZdarzenia.charAt(0).toUpperCase() + typZdarzenia.slice(1)}`,
+            description: `**Opis:**\n${opis}`,
             fields: [
                 {
                     name: "Gracz:",
-                    value: `${zdarzenie.nazwaGracza}`,
+                    value: `${nazwaGracza} (${nickDiscord})`,
                     inline: false
                 },
                 {
                     name: "Data i Godzina:",
-                    value: zdarzenie.data,
+                    value: data,
                     inline: true
                 },
                 {
                     name: "Wystawiający:",
-                    value: zdarzenie.userName,
+                    value: userName,
                     inline: true
                 },
                 {
                     name: "Typ Zdarzenia:",
-                    value: zdarzenie.typZdarzenia,
+                    value: typZdarzenia,
                     inline: true
                 }
             ],
@@ -119,6 +100,11 @@ function dodajZdarzenie() {
             }
         }]
     };
+
+    let webhookUrl = discordWebhookUrlMandat;
+    if (typZdarzenia === "zatrzymanie") {
+        webhookUrl = discordWebhookUrlZatrzymanie;
+    }
 
     fetch(webhookUrl, {
         method: 'POST',
@@ -134,7 +120,7 @@ function dodajZdarzenie() {
     });
 }
 
-// Funkcja dodająca opcję dyscyplinarną
+// Funkcje do dodawania działań dyscyplinarnych
 function dodajDyscyplinarne() {
     const typDyscypliny = document.getElementById("typDyscypliny").value;
     const opisDyscypliny = document.getElementById("opisDyscypliny").value;
@@ -197,4 +183,23 @@ function dodajDyscyplinarne() {
     .catch(error => {
         console.error('Błąd podczas wysyłania dyscypliny do Discorda:', error);
     });
+}
+
+// Dodawanie nowych rodzajów dyscyplinarnych (nowe przyciski)
+function dodajZawieszenie() {
+    const typDyscypliny = "Zawieszenie";
+    const opisDyscypliny = "Zawieszenie na okres 30 dni.";
+    dodajDyscyplinarne();
+}
+
+function dodajReprymende() {
+    const typDyscypliny = "Reprymenda";
+    const opisDyscypliny = "Reprymenda za złamanie regulaminu.";
+    dodajDyscyplinarne();
+}
+
+function dodajZwolnienie() {
+    const typDyscypliny = "Zwolnienie Dyscyplinarne";
+    const opisDyscypliny = "Zwolnienie z służby z powodu rażącego naruszenia regulaminu.";
+    dodajDyscyplinarne();
 }
