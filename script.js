@@ -48,63 +48,74 @@ function zaloguj(event) {
     }
 }
 
-// Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
-function dodajZdarzenie() {
-    const nazwaGracza = document.getElementById("nazwaGracza").value;
-    const nickDiscord = document.getElementById("nickDiscord").value;
-    const typZdarzenia = document.getElementById("typZdarzenia").value;
-    const opis = document.getElementById("opis").value;
+// Funkcja dodająca opcję dyscyplinarną
+function dodajDyscyplinarne() {
+    const typDyscypliny = document.getElementById("typDyscypliny").value;
+    const opisDyscypliny = document.getElementById("opisDyscypliny").value;
+    const imieNazwiskoGracza = document.getElementById("nazwaGracza").value;
+    const nickDiscordGracza = document.getElementById("nickDiscord").value;
     const data = new Date().toLocaleString("pl-PL");
     const userName = sessionStorage.getItem("userName");  // Pobieranie imienia i nazwiska użytkownika z sesji
 
-    const zdarzenie = {
-        nazwaGracza,
-        nickDiscord,
-        typZdarzenia,
-        opis,
+    const dyscyplina = {
+        typDyscypliny,
+        opisDyscypliny,
+        imieNazwiskoGracza,
+        nickDiscordGracza,
         data,
         userName
     };
 
-    // Dodawanie zdarzenia do listy na stronie
-    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza}) - Wystawione przez: ${zdarzenie.userName}`;
-    zdarzeniaLista.appendChild(listItem);
-
-    // Wybór odpowiedniego webhooka dla typu zdarzenia
-    let webhookUrl = discordWebhookUrlMandat;
-    if (typZdarzenia === "mandat") {
-        webhookUrl = discordWebhookUrlMandat;
-    } else {
-        webhookUrl = discordWebhookUrlDyscyplinarne;
-    }
-
     // Wysyłanie zdarzenia do Discorda
     const embedData = {
-        content: `Nowe zdarzenie: ${typZdarzenia}`,
+        content: `Nowe zdarzenie dyscyplinarne: ${typDyscypliny}`,
         embeds: [{
-            title: `Zdarzenie: ${typZdarzenia}`,
-            description: `Gracz: ${nazwaGracza}\nNick Discord: ${nickDiscord}\nOpis: ${opis}\nData: ${data}`,
-            color: typZdarzenia === "mandat" ? 0x00FF00 : 0xFF0000,
+            title: `Dyscyplinarne: ${typDyscypliny}`,
+            description: opisDyscypliny,
+            fields: [
+                {
+                    name: "Gracz",
+                    value: imieNazwiskoGracza,
+                    inline: true
+                },
+                {
+                    name: "Nick Discord",
+                    value: nickDiscordGracza,
+                    inline: true
+                },
+                {
+                    name: "Data",
+                    value: data,
+                    inline: true
+                },
+                {
+                    name: "Wystawiający",
+                    value: userName,
+                    inline: true
+                }
+            ],
             footer: {
-                text: `Wystawione przez: ${userName}`
+                text: `Typ: ${typDyscypliny}`,
             }
         }]
     };
 
-    fetch(webhookUrl, {
+    fetch(discordWebhookUrlDyscyplinarne, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(embedData)
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Wiadomość wysłana na Discorda:", data);
+        console.log('Dyscyplina wysłana do Discorda:', data);
     })
     .catch(error => {
-        console.error("Błąd wysyłania wiadomości na Discorda:", error);
+        console.error('Błąd podczas wysyłania dyscypliny do Discorda:', error);
     });
+
+    // Dodawanie zdarzenia do listy na stronie
+    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
+    const listItem = document.createElement("li");
+    listItem.textContent = `${dyscyplina.data} - ${dyscyplina.typDyscypliny}: ${dyscyplina.opisDyscypliny} (${dyscyplina.imieNazwiskoGracza}) - Wystawione przez: ${dyscyplina.userName}`;
+    zdarzeniaLista.appendChild(listItem);
 }
