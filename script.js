@@ -24,6 +24,7 @@ function zaloguj(event) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
+    // Sprawdzamy, czy użytkownik istnieje i czy hasło jest poprawne
     if (validUsers[username] && validUsers[username].password === password) {
         sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
         sessionStorage.setItem("userName", validUsers[username].name);  // Zapisywanie pełnego imienia i nazwiska użytkownika
@@ -44,6 +45,7 @@ function zaloguj(event) {
             document.getElementById("dyscyplinarneOptions").style.display = "block";
         }
     } else {
+        // Błąd logowania
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
 }
@@ -118,74 +120,5 @@ function dodajZdarzenie() {
     })
     .catch(error => {
         console.error('Błąd podczas wysyłania zdarzenia do Discorda:', error);
-    });
-}
-
-// Funkcja dodająca zdarzenie dyscyplinarne
-function dodajDyscyplinarne() {
-    const nickDiscordDyscyplina = document.getElementById("nickDiscordDyscyplina").value;
-    const imieNazwiskoDyscyplina = document.getElementById("imieNazwiskoDyscyplina").value;
-    const typDyscypliny = document.getElementById("typDyscypliny").value;
-    const opisDyscypliny = document.getElementById("opisDyscypliny").value;
-    const data = new Date().toLocaleString("pl-PL");
-    const userName = sessionStorage.getItem("userName");
-
-    const zdarzenieDyscyplinarne = {
-        nickDiscordDyscyplina,
-        imieNazwiskoDyscyplina,
-        typDyscypliny,
-        opisDyscypliny,
-        data,
-        userName
-    };
-
-    // Wybór odpowiedniego webhooka
-    const webhookUrl = discordWebhookUrlDyscyplinarne;
-
-    // Wysyłanie zdarzenia do Discorda
-    const embedData = {
-        content: `Nowe zdarzenie dyscyplinarne: ${typDyscypliny}`,
-        embeds: [{
-            title: `Zdarzenie: ${typDyscypliny}`,
-            description: `${opisDyscypliny}`,
-            fields: [
-                {
-                    name: "Gracz",
-                    value: imieNazwiskoDyscyplina,
-                    inline: true
-                },
-                {
-                    name: "Nick Discord",
-                    value: nickDiscordDyscyplina,
-                    inline: true
-                },
-                {
-                    name: "Data",
-                    value: data,
-                    inline: true
-                },
-                {
-                    name: "Wystawiający",
-                    value: userName,
-                    inline: true
-                }
-            ],
-            footer: {
-                text: `Typ: ${typDyscypliny}`,
-            }
-        }]
-    };
-
-    fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(embedData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Zdarzenie dyscyplinarne wysłane do Discorda:', data);
-    })
-    .catch(error => {
-        console.error('Błąd podczas wysyłania zdarzenia dyscyplinarnego do Discorda:', error);
     });
 }
