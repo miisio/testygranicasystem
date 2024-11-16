@@ -1,3 +1,8 @@
+// Webhook URL dla mandatów
+const discordWebhookUrlMandat = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
+// Webhook URL dla nowych zdarzeń dyscyplinarnych
+const discordWebhookUrlDyscyplinarne = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y";
+
 // Spersonalizowane dane logowania
 const validUsers = {
     "michal.nowacki": { password: "haslo123", name: "Płk SG Michał Nowacki" },
@@ -15,18 +20,17 @@ function zaloguj(event) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    // Sprawdzamy, czy użytkownik i hasło są prawidłowe
     if (validUsers[username] && validUsers[username].password === password) {
-        sessionStorage.setItem("username", username);  // Zapisywanie loginu użytkownika w sesji
+        sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
         sessionStorage.setItem("userName", validUsers[username].name);  // Zapisywanie pełnego imienia i nazwiska użytkownika
 
-        // Po udanym logowaniu ukrywamy formularz logowania, a pokazujemy sekcję główną
+        // Ukrywanie formularza logowania i pokazywanie głównej sekcji
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
 
-        // Dodawanie odpowiedniego stylu w zależności od roli
-        if (username === "michal.nowacki" || username === "cezary.wieczorek" || username === "leonard.bielik") {
-            document.getElementById("dyscyplinarneOptions").style.display = "block"; // Pokaż sekcję dyscyplinarną, jeśli to odpowiednia osoba
+        // Jeśli to Michał Nowacki, Leonard Bielik, lub Cezary Wieczorek, dodaj opcje dyscyplinarne
+        if (["michal.nowacki", "cezary.wieczorek", "leonard.bielik"].includes(username)) {
+            document.getElementById("dyscyplinarneOptions").style.display = "block";
         }
     } else {
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
@@ -36,6 +40,7 @@ function zaloguj(event) {
 // Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
 function dodajZdarzenie() {
     const nazwaGracza = document.getElementById("nazwaGracza").value;
+    const nickDiscord = document.getElementById("nickDiscord").value;
     const typZdarzenia = document.getElementById("typZdarzenia").value;
     const opis = document.getElementById("opis").value;
     const data = new Date().toLocaleString("pl-PL");
@@ -43,6 +48,7 @@ function dodajZdarzenie() {
 
     const zdarzenie = {
         nazwaGracza,
+        nickDiscord,
         typZdarzenia,
         opis,
         data,
@@ -56,13 +62,11 @@ function dodajZdarzenie() {
     zdarzeniaLista.appendChild(listItem);
 
     // Wybór odpowiedniego webhooka dla typu zdarzenia
-    let webhookUrl = "";
+    let webhookUrl = discordWebhookUrlMandat;
     if (typZdarzenia === "mandat") {
-        webhookUrl = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
-    } else if (typZdarzenia === "zatrzymanie") {
-        webhookUrl = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
+        webhookUrl = discordWebhookUrlMandat;
     } else {
-        webhookUrl = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y";
+        webhookUrl = discordWebhookUrlDyscyplinarne;
     }
 
     // Wysyłanie zdarzenia do Discorda
@@ -70,53 +74,26 @@ function dodajZdarzenie() {
         content: `Nowe zdarzenie: ${typZdarzenia}`,
         embeds: [{
             title: `Zdarzenie: ${typZdarzenia}`,
-            description: opis,
-            fields: [
-                {
-                    name: "Gracz",
-                    value: nazwaGracza,
-                    inline: true
-                },
-                {
-                    name: "Data",
-                    value: data,
-                    inline: true
-                },
-                {
-                    name: "Wystawiający",
-                    value: userName,
-                    inline: true
-                }
-            ],
+            description: `Gracz: ${nazwaGracza}\nNick Discord: ${nickDiscord}\nOpis: ${opis}\nData: ${data}`,
+            color: typZdarzenia === "mandat" ? 0x00FF00 : 0xFF0000,
             footer: {
-                text: `Typ: ${typZdarzenia}`,
+                text: `Wystawione przez: ${userName}`
             }
         }]
     };
 
     fetch(webhookUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(embedData)
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Zdarzenie wysłane do Discorda:', data);
+        console.log("Wiadomość wysłana na Discorda:", data);
     })
     .catch(error => {
-        console.error('Błąd podczas wysyłania zdarzenia do Discorda:', error);
+        console.error("Błąd wysyłania wiadomości na Discorda:", error);
     });
 }
-
-// Zabezpieczenie przed wylogowaniem - sprawdzenie w sessionStorage
-window.onload = function() {
-    const username = sessionStorage.getItem("username");
-    if (username) {
-        document.getElementById("loginSection").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        document.getElementById("userNameDisplay").textContent = `Witaj, ${sessionStorage.getItem("userName")}`;
-        if (["michal.nowacki", "cezary.wieczorek", "leonard.bielik"].includes(username)) {
-            document.getElementById("dyscyplinarneOptions").style.display = "block"; // Pokazuje sekcję dyscyplinarną
-        }
-    }
-};
