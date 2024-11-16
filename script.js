@@ -1,5 +1,7 @@
 // Webhook URL dla mandatów
 const discordWebhookUrlMandat = "https://discord.com/api/webhooks/1305617060402823309/RQXIaIDsJH-W8X7MBvgYGsgBSUJiInze_KOik63oX6kQqXTPFpapDs_LCzkJDRHJ357B";
+// Webhook URL dla zatrzymań
+const discordWebhookUrlZatrzymanie = "https://discord.com/api/webhooks/1305568093958963302/HOfEAIM7-p_HilV91rnyxqe56qFA-AZTHoVtZK05i_cOisLxVrgQYwiCjkCNrHgAHXJH";
 // Webhook URL dla nowych zdarzeń dyscyplinarnych
 const discordWebhookUrlDyscyplinarne = "https://discord.com/api/webhooks/1305621989087776778/MsIgza2EjHxSko6Mn0roZ-v-XLRygMCopcOenehBeHE2dY5kZC9AHsUSHiU-8dqe3J6Y";
 
@@ -29,7 +31,7 @@ function zaloguj(event) {
         sessionStorage.setItem("userName", validUsers[username].name);  // Zapisywanie pełnego imienia i nazwiska użytkownika
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        
+
         // Dodawanie odpowiedniego stylu w zależności od roli
         if (username === "wzd") {
             document.body.classList.add("wzd");
@@ -46,6 +48,90 @@ function zaloguj(event) {
     } else {
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
+}
+
+// Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
+function dodajZdarzenie() {
+    const nazwaGracza = document.getElementById("nazwaGracza").value;
+    const typZdarzenia = document.getElementById("typZdarzenia").value;
+    const opis = document.getElementById("opis").value;
+    const data = new Date().toLocaleString("pl-PL");
+    const userName = sessionStorage.getItem("userName");  // Pobieranie imienia i nazwiska użytkownika z sesji
+
+    const zdarzenie = {
+        nazwaGracza,
+        typZdarzenia,
+        opis,
+        data,
+        userName
+    };
+
+    // Dodawanie zdarzenia do listy na stronie
+    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
+    const listItem = document.createElement("li");
+    listItem.textContent = `${zdarzenie.data} - ${zdarzenie.typZdarzenia}: ${zdarzenie.opis} (${zdarzenie.nazwaGracza}) - Wystawione przez: ${zdarzenie.userName}`;
+    zdarzeniaLista.appendChild(listItem);
+
+    // Wybór webhooka w zależności od typu zdarzenia
+    let webhookUrl = "";
+    let embedTitle = "";
+    let embedDescription = "";
+    
+    if (typZdarzenia === "mandat") {
+        webhookUrl = discordWebhookUrlMandat;
+        embedTitle = "Nowy Mandat";
+        embedDescription = zdarzenie.opis;
+    } else if (typZdarzenia === "zatrzymanie") {
+        webhookUrl = discordWebhookUrlZatrzymanie;
+        embedTitle = "Nowe Zatrzymanie";
+        embedDescription = zdarzenie.opis;
+    }
+
+    const embedData = {
+        content: `Nowe zdarzenie: ${typZdarzenia}`,
+        embeds: [{
+            title: embedTitle,
+            description: embedDescription,
+            fields: [
+                {
+                    name: "Gracz:",
+                    value: `${zdarzenie.nazwaGracza}`,
+                    inline: false
+                },
+                {
+                    name: "Data i Godzina:",
+                    value: zdarzenie.data,
+                    inline: true
+                },
+                {
+                    name: "Wystawiający:",
+                    value: zdarzenie.userName,
+                    inline: true
+                },
+                {
+                    name: "Typ Zdarzenia:",
+                    value: zdarzenie.typZdarzenia,
+                    inline: true
+                }
+            ],
+            footer: {
+                text: "Zdarzenie zarejestrowane przez System Raportowania Granicznego",
+            }
+        }]
+    };
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(embedData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Zdarzenie wysłane do Discorda:', data);
+    })
+    .catch(error => {
+        console.error('Błąd podczas wysyłania zdarzenia do Discorda:', error);
+    });
 }
 
 // Funkcja dodająca opcję dyscyplinarną
@@ -66,36 +152,35 @@ function dodajDyscyplinarne() {
         userName
     };
 
-    // Wysyłanie zdarzenia do Discorda
     const embedData = {
         content: `Nowe zdarzenie dyscyplinarne: ${typDyscypliny}`,
         embeds: [{
-            title: `Dyscyplinarne: ${typDyscypliny}`,
-            description: opisDyscypliny,
+            title: `Dyscyplinarne Zdarzenie: ${typDyscypliny}`,
+            description: `**Opis Działania Dyscyplinarnego:**\n${opisDyscypliny}`,
             fields: [
                 {
-                    name: "Gracz",
-                    value: imieNazwiskoGracza,
-                    inline: true
+                    name: "Gracz:",
+                    value: `${imieNazwiskoGracza}\n(${nickDiscordGracza})`,
+                    inline: false
                 },
                 {
-                    name: "Nick Discord",
-                    value: nickDiscordGracza,
-                    inline: true
-                },
-                {
-                    name: "Data",
+                    name: "Data i Godzina:",
                     value: data,
                     inline: true
                 },
                 {
-                    name: "Wystawiający",
+                    name: "Wystawiający:",
                     value: userName,
+                    inline: true
+                },
+                {
+                    name: "Typ Działania:",
+                    value: typDyscypliny,
                     inline: true
                 }
             ],
             footer: {
-                text: `Typ: ${typDyscypliny}`,
+                text: "Zdarzenie zarejestrowane przez System Raportowania Granicznego",
             }
         }]
     };
@@ -112,10 +197,4 @@ function dodajDyscyplinarne() {
     .catch(error => {
         console.error('Błąd podczas wysyłania dyscypliny do Discorda:', error);
     });
-
-    // Dodawanie zdarzenia do listy na stronie
-    const zdarzeniaLista = document.getElementById("zdarzeniaLista");
-    const listItem = document.createElement("li");
-    listItem.textContent = `${dyscyplina.data} - ${dyscyplina.typDyscypliny}: ${dyscyplina.opisDyscypliny} (${dyscyplina.imieNazwiskoGracza}) - Wystawione przez: ${dyscyplina.userName}`;
-    zdarzeniaLista.appendChild(listItem);
 }
