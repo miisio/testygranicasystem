@@ -11,7 +11,6 @@
     <!-- Nagłówek -->
     <header>
         <div class="logo">
-            <!-- Flaga Polski -->
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Poland.svg/1280px-Flag_of_Poland.svg.png" alt="Flaga Polski" class="polska-flaga">
             <h1>System Raportowania Granicznego</h1>
         </div>
@@ -60,6 +59,12 @@
         <!-- Opcje Dyscyplinarne -->
         <section id="dyscyplinarneOptions" style="display: none;">
             <h3>Opcje Dyscyplinarne</h3>
+            <label for="imieDyscypliny">Imię i Nazwisko Osoby:</label>
+            <input type="text" id="imieDyscypliny" required>
+
+            <label for="nickDyscypliny">Nick na Discordzie:</label>
+            <input type="text" id="nickDyscypliny" required>
+
             <label for="typDyscypliny">Typ Działania:</label>
             <select id="typDyscypliny">
                 <option value="zawieszenie">Zawieszenie</option>
@@ -70,19 +75,7 @@
             <label for="opisDyscypliny">Opis:</label>
             <textarea id="opisDyscypliny" required></textarea>
 
-            <label for="imieDyscypliny">Imię i Nazwisko Gracza:</label>
-            <input type="text" id="imieDyscypliny" placeholder="Wpisz imię i nazwisko" required>
-
-            <label for="nickDyscypliny">Nick na Discordzie:</label>
-            <input type="text" id="nickDyscypliny" placeholder="Wpisz nick z Discorda" required>
-
             <button type="button" onclick="dodajDyscyplinarne()">Zarejestruj Działanie</button>
-            <br><br>
-
-            <!-- Nowe przyciski -->
-            <button type="button" onclick="dodajZawieszenie()">Dodaj Zawieszenie</button>
-            <button type="button" onclick="dodajReprymende()">Dodaj Reprymendę</button>
-            <button type="button" onclick="dodajZwolnienie()">Dodaj Zwolnienie</button>
         </section>
 
         <!-- Lista Zdarzeń -->
