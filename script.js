@@ -24,7 +24,6 @@ function zaloguj(event) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    // Sprawdzamy, czy użytkownik istnieje i czy hasło jest poprawne
     if (validUsers[username] && validUsers[username].password === password) {
         sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
         sessionStorage.setItem("userName", validUsers[username].name);  // Zapisywanie pełnego imienia i nazwiska użytkownika
@@ -45,7 +44,6 @@ function zaloguj(event) {
             document.getElementById("dyscyplinarneOptions").style.display = "block";
         }
     } else {
-        // Błąd logowania
         document.getElementById("loginError").textContent = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
 }
@@ -53,6 +51,7 @@ function zaloguj(event) {
 // Funkcja dodająca zdarzenie do listy i wysyłająca powiadomienie na Discorda w formacie embed
 function dodajZdarzenie() {
     const nazwaGracza = document.getElementById("nazwaGracza").value;
+    const nickDiscord = document.getElementById("nickDiscord").value;
     const typZdarzenia = document.getElementById("typZdarzenia").value;
     const opis = document.getElementById("opis").value;
     const data = new Date().toLocaleString("pl-PL");
@@ -60,6 +59,7 @@ function dodajZdarzenie() {
 
     const zdarzenie = {
         nazwaGracza,
+        nickDiscord,
         typZdarzenia,
         opis,
         data,
@@ -90,6 +90,11 @@ function dodajZdarzenie() {
                 {
                     name: "Gracz",
                     value: nazwaGracza,
+                    inline: true
+                },
+                {
+                    name: "Nick Discord",
+                    value: nickDiscord,
                     inline: true
                 },
                 {
