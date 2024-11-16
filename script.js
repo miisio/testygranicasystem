@@ -8,9 +8,13 @@ const validUsers = {
     "michal.nowacki": { password: "haslo123", name: "Płk SG Michał Nowacki" },
     "cezary.wieczorek": { password: "haslo456", name: "Kpt. SG Cezary Wieczorek" },
     "leonard.bielik": { password: "haslo101", name: "Ppłk SG Leonard Bielik" },
-    "cezary.poranek": { password: "haslo789", name: "Ppor. SG Cezary Poranek" },
+    "cezary.poranek": { password: "haslo789", name: "Kpr. SG Cezary Poranek" },
     "jan.kowalski": { password: "haslo202", name: "Szer. SG Jan Kowalski" },
-    "adam.cipkiewicz": { password: "haslo404", name: "Szer. SG Adam Cipkiewicz" }
+    "jan.kowalczyk": { password: "haslo303", name: "Szer. SG Jan Kowalczyk" },
+    "adam.cipkiewicz": { password: "haslo404", name: "Szer. SG Adam Cipkiewicz" },
+    "admin": { password: "granica123", name: "Administrator" },
+    "wzd": { password: "bezpiecznosc123", name: "Wydział Zabezpieczeń Straży Granicznej" },
+    "sg": { password: "straza123", name: "Zwykła Straż Graniczna" },
 };
 
 // Funkcja logowania
@@ -23,10 +27,17 @@ function zaloguj(event) {
     if (validUsers[username] && validUsers[username].password === password) {
         sessionStorage.setItem("username", username);  // Zapisywanie użytkownika w sesji
         sessionStorage.setItem("userName", validUsers[username].name);  // Zapisywanie pełnego imienia i nazwiska użytkownika
-
-        // Ukrywanie formularza logowania i pokazywanie głównej sekcji
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
+        
+        // Dodawanie odpowiedniego stylu w zależności od roli
+        if (username === "wzd") {
+            document.body.classList.add("wzd");
+            document.getElementById("mainContent").classList.add("wzd");
+        } else {
+            document.body.classList.add("sgz");
+            document.getElementById("mainContent").classList.add("sgz");
+        }
 
         // Jeśli to Michał Nowacki, Leonard Bielik, lub Cezary Wieczorek, dodaj opcje dyscyplinarne
         if (["michal.nowacki", "cezary.wieczorek", "leonard.bielik"].includes(username)) {
