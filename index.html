@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Raportowania Granicznego</title>
+    <title>Mobilny Terminal Ochrony Granic</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
     <header>
         <div class="logo">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Poland.svg/1280px-Flag_of_Poland.svg.png" alt="Flaga Polski" class="polska-flaga">
-            <h1>System Raportowania Granicznego</h1>
+            <h1>Mobilny Terminal Ochrony Granic</h1>
         </div>
     </header>
 
@@ -33,6 +33,7 @@
 
     <!-- Sekcja główna -->
     <main id="mainContent" style="display: none;">
+        <!-- Zarządzanie zdarzeniami -->
         <section id="dodajZdarzenie">
             <h2>Dodaj Zdarzenie</h2>
             <form id="zdarzenieForm">
@@ -56,38 +57,52 @@
             </form>
         </section>
 
-        <!-- Opcje Dyscyplinarne -->
-        <section id="dyscyplinarneOptions" style="display: none;">
-            <h3>Opcje Dyscyplinarne</h3>
-            <label for="imieDyscypliny">Imię i Nazwisko Osoby:</label>
-            <input type="text" id="imieDyscypliny" required>
+        <!-- Zarządzanie bazą danych -->
+        <section id="zarzadzanieDanymi">
+            <h2>Zarządzanie Bazą Danych</h2>
 
-            <label for="nickDyscypliny">Nick na Discordzie:</label>
-            <input type="text" id="nickDyscypliny" required>
+            <!-- Dodawanie osoby -->
+            <div>
+                <h3>Dodaj Osobę</h3>
+                <form id="dodajOsobeForm">
+                    <label for="imieNazwisko">Imię i Nazwisko:</label>
+                    <input type="text" id="imieNazwisko" required>
 
-            <label for="typDyscypliny">Typ Działania:</label>
-            <select id="typDyscypliny">
-                <option value="zawieszenie">Zawieszenie</option>
-                <option value="reprymenda">Reprymenda</option>
-                <option value="zwolnienie">Zwolnienie Dyscyplinarne</option>
-            </select>
+                    <label for="numerDowodu">Numer Dowodu Osobistego:</label>
+                    <input type="text" id="numerDowodu" required>
 
-            <label for="opisDyscypliny">Opis:</label>
-            <textarea id="opisDyscypliny" required></textarea>
+                    <label for="dataUrodzenia">Data Urodzenia:</label>
+                    <input type="date" id="dataUrodzenia" required>
 
-            <button type="button" onclick="dodajDyscyplinarne()">Zarejestruj Działanie</button>
-        </section>
+                    <button type="button" onclick="dodajOsobe()">Dodaj Osobę</button>
+                </form>
+            </div>
 
-        <!-- Lista Zdarzeń -->
-        <section id="listaZdarzen">
-            <h2>Lista Zdarzeń</h2>
-            <ul id="zdarzeniaLista"></ul>
+            <!-- Dodawanie pojazdu -->
+            <div>
+                <h3>Dodaj Pojazd</h3>
+                <form id="dodajPojazdForm">
+                    <label for="numerRejestracyjny">Numer Rejestracyjny:</label>
+                    <input type="text" id="numerRejestracyjny" required>
+
+                    <label for="marka">Marka:</label>
+                    <input type="text" id="marka" required>
+
+                    <label for="model">Model:</label>
+                    <input type="text" id="model" required>
+
+                    <label for="wlasciciel">Imię i Nazwisko Właściciela:</label>
+                    <input type="text" id="wlasciciel" required>
+
+                    <button type="button" onclick="dodajPojazd()">Dodaj Pojazd</button>
+                </form>
+            </div>
         </section>
     </main>
 
     <!-- Stopka z copyrightem -->
     <footer>
-        <p>&copy; 2024 System Raportowania Granicznego - Wszystkie prawa zastrzeżone</p>
+        <p>&copy; 2024 Mobilny Terminal Ochrony Granic - Wszystkie prawa zastrzeżone</p>
     </footer>
 
     <script src="script.js"></script>
