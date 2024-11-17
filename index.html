@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobilny Terminal Ochrony Granic</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Nagłówek -->
     <header>
-        <div class="logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Poland.svg/1280px-Flag_of_Poland.svg.png" alt="Flaga Polski" class="polska-flaga">
-            <h1>Mobilny Terminal Ochrony Granic</h1>
-        </div>
+        <h1>Mobilny Terminal Ochrony Granic</h1>
     </header>
 
     <!-- Sekcja logowania -->
@@ -22,10 +18,8 @@
         <form id="loginForm" onsubmit="zaloguj(event)">
             <label for="username">Nazwa Użytkownika:</label>
             <input type="text" id="username" required>
-
             <label for="password">Hasło:</label>
             <input type="password" id="password" required>
-
             <button type="submit">Zaloguj się</button>
         </form>
         <p id="loginError" class="error"></p>
@@ -33,76 +27,43 @@
 
     <!-- Sekcja główna -->
     <main id="mainContent" style="display: none;">
-        <!-- Zarządzanie zdarzeniami -->
-        <section id="dodajZdarzenie">
-            <h2>Dodaj Zdarzenie</h2>
-            <form id="zdarzenieForm">
-                <label for="nazwaGracza">Imię i Nazwisko Gracza:</label>
-                <input type="text" id="nazwaGracza" required>
+        <nav>
+            <a href="baza.html">Przejdź do bazy danych</a>
+        </nav>
 
-                <label for="nickDiscord">Nick na Discordzie:</label>
-                <input type="text" id="nickDiscord" required>
-
-                <label for="typZdarzenia">Typ Zdarzenia:</label>
-                <select id="typZdarzenia">
-                    <option value="mandat">Mandat</option>
-                    <option value="zatrzymanie">Zatrzymanie</option>
-                    <option value="nakaz">Nakaz</option>
-                </select>
-
-                <label for="opis">Opis:</label>
-                <textarea id="opis" required></textarea>
-
-                <button type="button" onclick="dodajZdarzenie()">Dodaj Zdarzenie</button>
+        <!-- Zarządzanie osobami -->
+        <section id="osobySection">
+            <h2>Dodaj Osobę</h2>
+            <form id="dodajOsobeForm">
+                <label for="imieNazwisko">Imię i Nazwisko:</label>
+                <input type="text" id="imieNazwisko" required>
+                <label for="numerDowodu">Numer Dowodu Osobistego:</label>
+                <input type="text" id="numerDowodu" required>
+                <label for="dataUrodzenia">Data Urodzenia:</label>
+                <input type="date" id="dataUrodzenia" required>
+                <button type="button" onclick="dodajOsobe()">Dodaj Osobę</button>
             </form>
         </section>
 
-        <!-- Zarządzanie bazą danych -->
-        <section id="zarzadzanieDanymi">
-            <h2>Zarządzanie Bazą Danych</h2>
-
-            <!-- Dodawanie osoby -->
-            <div>
-                <h3>Dodaj Osobę</h3>
-                <form id="dodajOsobeForm">
-                    <label for="imieNazwisko">Imię i Nazwisko:</label>
-                    <input type="text" id="imieNazwisko" required>
-
-                    <label for="numerDowodu">Numer Dowodu Osobistego:</label>
-                    <input type="text" id="numerDowodu" required>
-
-                    <label for="dataUrodzenia">Data Urodzenia:</label>
-                    <input type="date" id="dataUrodzenia" required>
-
-                    <button type="button" onclick="dodajOsobe()">Dodaj Osobę</button>
-                </form>
-            </div>
-
-            <!-- Dodawanie pojazdu -->
-            <div>
-                <h3>Dodaj Pojazd</h3>
-                <form id="dodajPojazdForm">
-                    <label for="numerRejestracyjny">Numer Rejestracyjny:</label>
-                    <input type="text" id="numerRejestracyjny" required>
-
-                    <label for="marka">Marka:</label>
-                    <input type="text" id="marka" required>
-
-                    <label for="model">Model:</label>
-                    <input type="text" id="model" required>
-
-                    <label for="wlasciciel">Imię i Nazwisko Właściciela:</label>
-                    <input type="text" id="wlasciciel" required>
-
-                    <button type="button" onclick="dodajPojazd()">Dodaj Pojazd</button>
-                </form>
-            </div>
+        <!-- Zarządzanie pojazdami -->
+        <section id="pojazdySection">
+            <h2>Dodaj Pojazd</h2>
+            <form id="dodajPojazdForm">
+                <label for="numerRejestracyjny">Numer Rejestracyjny:</label>
+                <input type="text" id="numerRejestracyjny" required>
+                <label for="marka">Marka:</label>
+                <input type="text" id="marka" required>
+                <label for="model">Model:</label>
+                <input type="text" id="model" required>
+                <label for="wlasciciel">Imię i Nazwisko Właściciela:</label>
+                <input type="text" id="wlasciciel" required>
+                <button type="button" onclick="dodajPojazd()">Dodaj Pojazd</button>
+            </form>
         </section>
     </main>
 
-    <!-- Stopka z copyrightem -->
     <footer>
-        <p>&copy; 2024 Mobilny Terminal Ochrony Granic - Wszystkie prawa zastrzeżone</p>
+        <p>&copy; 2024 Mobilny Terminal Ochrony Granic</p>
     </footer>
 
     <script src="script.js"></script>
